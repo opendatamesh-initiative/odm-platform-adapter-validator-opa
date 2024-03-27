@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  opa:
+    image: openpolicyagent/opa:latest-rootless
+    ports:
+      - published: 8181
+        target: 8181
+    expose:
+      - 8181
+    network_mode: "host"
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"

@@ -1,0 +1,29 @@
+##########################
+# Spring
+##########################
+spring:
+  profile: dev
+
+##########################
+# Server configuration
+##########################
+app:
+  workdir:
+
+server:
+  port: 9001
+  error:
+    include-message: always
+  servlet:
+    context-path: /api/v1/up/policy-engine/
+timeout:
+  seconds: 30
+
+
+##########################
+# OPA configuration
+##########################
+opa:
+  url:
+    policies: http://localhost:8181/v1/policies
+    data: http://localhost:8181/v1/data

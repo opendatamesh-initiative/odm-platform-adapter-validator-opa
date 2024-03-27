@@ -1,0 +1,45 @@
+version: '3.3'
+
+services:
+
+  # OPA Server
+  opa:
+    image: openpolicyagent/opa:latest-rootless
+    env_file: .env
+    ports:
+      - "${OPA_PORT}:${OPA_PORT}"
+    command:
+      - "run"
+      - "--server"
+      - "--log-level=debug"
+      - "--log-format=json-pretty"
+      - "--set=decision_logs.console=true"
+    volumes:
+      - opa:/var/lib/opa/data:rw
+
+  # Spring boot app
+  policyservice:
+    depends_on:
+      - opa
+      - PostgreSQL
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        SPRING_PROFILES_ACTIVE: "docker"
+        JAVA_OPTS: ""
+        DATABASE_URL: "jdbc:postgresql://PostgreSQL:${DATABASE_PORT}/${DATABASE_NAME}"
+        DATABASE_USERNAME: "${DATABASE_USERNAME}"
+        DATABASE_PASSWORD: "${DATABASE_PASSWORD}"
+        FLYWAY_SCHEMA: "flyway"
+        FLYWAY_SCRIPTS_DIR: "postgresql"
+        SPRING_PORT: "${SPRING_PORT}"
+        OPA_HOSTNAME: "opa"
+        OPA_PORT: "${OPA_PORT}"
+    env_file: .env
+    ports:
+      - "${SPRING_PORT}:${SPRING_PORT}"
+
+volumes:
+  postgres:
+  opa:

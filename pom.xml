@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ~  Copyright 2022 Quantyca S.R.L
+ ~  Licensed under the Apache License, Version 2.0 (the
+"License");
+ ~  you may not use this file except in compliance with the License.
+ ~  You may obtain
+a copy of the License at
+ ~  http://www.apache.org/licenses/LICENSE-2.0
+ ~  Unless required by
+applicable law or agreed to in writing, software
+ ~  distributed under the License is distributed on
+an "AS IS" BASIS,
+ ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ ~
+See the License for the specific language governing permissions and
+ ~  limitations under the
+License.
+ -->
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.7.4</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<groupId>org.opendatamesh</groupId>
+	<artifactId>odm-platform-up-policy-engine-opa</artifactId>
+	<name>OPA Policy Engine</name>
+	<description>Implementation of policy engine for OPA</description>
+	<version>1.0.0</version>
+	<url>https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</url>
+	<packaging>pom</packaging>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</connection>
+		<developerConnection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</developerConnection>
+		<url>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<name>Quantyca</name>
+			<email>odm.info@quantyca.it</email>
+			<organization>Quantyca S.R.L</organization>
+			<organizationUrl>https://www.quantyca.it/</organizationUrl>
+		</developer>
+	</developers>
+
+	<properties>
+		<java.version>11</java.version>
+		<maven.compiler.target>11</maven.compiler.target>
+		<maven.compiler.source>11</maven.compiler.source>
+		<policyservice.mainclass>
+			org.opendatamesh.platform.up.policy.engine.opa.PolicyEngineOpaApplication
+		</policyservice.mainclass>
+	</properties>
+
+	<dependencies>
+
+		<!-- Spring Framework-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.24</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- TestContainers -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>1.18.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>1.18.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mysql</artifactId>
+			<version>1.18.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.18.3</version>
+			<scope>test</scope>
+		</dependency>
+
+
+		<!-- Tests -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.13</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- ODM -->
+		<dependency>
+			<groupId>org.opendatamesh</groupId>
+			<artifactId>odm-platform-up-policy-engine-api</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.opendatamesh</groupId>
+			<artifactId>odm-platform-core-commons</artifactId>
+			<version>1.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+
+	</dependencies>
+
+	<!-- Needed to publish mvn artifact to GitHub Packages -->
+	<profiles>
+		<profile>
+			<id>github</id>
+			<activation>
+				<property>
+					<name>GitHubPackages</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<distributionManagement>
+				<repository>
+					<id>github</id>
+					<name>GitHub Packages</name>
+					<url>https://maven.pkg.github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
+</project>
