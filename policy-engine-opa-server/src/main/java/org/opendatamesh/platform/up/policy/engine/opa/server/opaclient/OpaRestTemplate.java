@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.opaclient;
+package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;

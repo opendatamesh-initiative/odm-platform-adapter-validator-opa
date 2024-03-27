@@ -1,6 +1,7 @@
 package org.opendatamesh.platform.up.policy.engine.opa;
 
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.opendatamesh.platform.up.policy.engine.opa.server.PolicyEngineOpaApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.DynamicPropertyRegistry;

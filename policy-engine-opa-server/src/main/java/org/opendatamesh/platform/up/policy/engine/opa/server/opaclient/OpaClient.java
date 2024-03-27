@@ -1,6 +1,6 @@
-package org.opendatamesh.platform.up.policy.engine.opa.opaclient;
+package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient;
 
-import org.opendatamesh.platform.up.policy.engine.opa.opaclient.v1.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.v1.EvaluationRequestBody;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;

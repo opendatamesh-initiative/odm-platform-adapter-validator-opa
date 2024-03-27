@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.opaclient.v1;
+package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.v1;
 
 import lombok.Data;
 

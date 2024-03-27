@@ -17,7 +17,7 @@ fi
 mkdir "$DOC_DIR"
 
 # Find all redoc-static.html files
-REDOC_FILE="opa-policy-server/target/redoc-static.html"
+REDOC_FILE="policy-engine-opa-server/target/redoc-static.html"
 
 # Check if any redoc-static.html files were found
 if [ -z "$REDOC_FILE" ]; then
@@ -26,7 +26,7 @@ if [ -z "$REDOC_FILE" ]; then
 fi
 
 # Copy and rename all redoc-static.html files to the aggregated documentation directory
-NEW_NAME="${DOC_DIR}/opa-policy-server-redoc-static.html"
+NEW_NAME="${DOC_DIR}/policy-engine-opa-server-redoc-static.html"
 cp "$REDOC_FILE" "$NEW_NAME"
 echo "Renamed and copied $REDOC_FILE to $NEW_NAME"
 

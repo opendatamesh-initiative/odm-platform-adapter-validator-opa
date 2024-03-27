@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.resources.errors;
+package org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors;
 
 import org.opendatamesh.platform.core.commons.servers.exceptions.ODMApiStandardErrors;
 

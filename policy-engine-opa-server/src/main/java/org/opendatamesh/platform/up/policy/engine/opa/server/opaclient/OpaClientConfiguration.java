@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.opaclient;
+package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

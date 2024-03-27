@@ -1,7 +1,7 @@
-package org.opendatamesh.platform.up.policy.engine.opa.services;
+package org.opendatamesh.platform.up.policy.engine.opa.server.services;
 
 import org.opendatamesh.platform.pp.policy.api.resources.PolicyResource;;
-import org.opendatamesh.platform.up.policy.engine.opa.opaclient.OpaClient;
+import org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.OpaClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

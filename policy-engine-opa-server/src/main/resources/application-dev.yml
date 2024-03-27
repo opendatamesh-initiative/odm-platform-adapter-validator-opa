@@ -12,7 +12,7 @@ app:
   workdir:
 
 server:
-  port: 9001
+  port: 9009
   error:
     include-message: always
   servlet:

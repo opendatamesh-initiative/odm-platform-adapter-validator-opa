@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.rest;
+package org.opendatamesh.platform.up.policy.engine.opa.server.rest;
 
 import org.opendatamesh.platform.core.commons.servers.exceptions.ODMApiExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;

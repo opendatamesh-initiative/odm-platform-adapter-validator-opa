@@ -1,4 +1,4 @@
-package org.opendatamesh.platform.up.policy.engine.opa.rest;
+package org.opendatamesh.platform.up.policy.engine.opa.server.rest;
 
 import org.opendatamesh.platform.core.commons.servers.exceptions.BadRequestException;
 import org.opendatamesh.platform.core.commons.servers.exceptions.InternalServerException;
@@ -6,10 +6,10 @@ import org.opendatamesh.platform.pp.policy.api.resources.PolicyResource;
 import org.opendatamesh.platform.up.policy.api.v1.controllers.AbstractPolicyEngineController;
 import org.opendatamesh.platform.up.policy.api.v1.resources.DocumentResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.EvaluationResource;
-import org.opendatamesh.platform.up.policy.engine.opa.opaclient.v1.EvaluationRequestBody;
-import org.opendatamesh.platform.up.policy.engine.opa.resources.errors.PolicyEngineOpaErrors;
-import org.opendatamesh.platform.up.policy.engine.opa.services.EvaluationService;
-import org.opendatamesh.platform.up.policy.engine.opa.services.PolicyService;
+import org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.v1.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors.PolicyEngineOpaErrors;
+import org.opendatamesh.platform.up.policy.engine.opa.server.services.EvaluationService;
+import org.opendatamesh.platform.up.policy.engine.opa.server.services.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
