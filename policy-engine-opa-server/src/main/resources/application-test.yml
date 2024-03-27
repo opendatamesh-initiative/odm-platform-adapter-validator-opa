@@ -3,7 +3,7 @@
 ##########################
 spring:
   # Profile
-  profile: dev
+  profile: test
 
 ##########################
 # Server configuration

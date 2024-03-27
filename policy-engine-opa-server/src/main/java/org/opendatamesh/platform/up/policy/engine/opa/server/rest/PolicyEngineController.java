@@ -11,12 +11,14 @@ import org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors.Po
 import org.opendatamesh.platform.up.policy.engine.opa.server.services.EvaluationService;
 import org.opendatamesh.platform.up.policy.engine.opa.server.services.PolicyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 
 import java.net.ConnectException;
 import java.util.Map;
 
+@RestController
 public class PolicyEngineController extends AbstractPolicyEngineController {
 
     @Autowired
@@ -78,4 +80,5 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
     private void deletePolicyFromOpaServer(String policyId) {
         policyService.deletePolicyById(policyId);
     }
+
 }
