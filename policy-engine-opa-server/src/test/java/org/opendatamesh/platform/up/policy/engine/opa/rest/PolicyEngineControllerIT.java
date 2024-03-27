@@ -37,7 +37,9 @@ public class PolicyEngineControllerIT extends PolicyEngineOpaApplicationIT {
         verifyResponseEntity(responseEntity, HttpStatus.OK, true);
         EvaluationResource evaluationResource = mapper.convertValue(responseEntity.getBody(), EvaluationResource.class);
         // Assert the body of the response
-        assertThat(evaluationResource.getEvaluationResult()).isNotNull();
+        assertThat(evaluationResource.getPolicyEvaluationId()).isEqualTo(1L);
+        assertThat(evaluationResource.getEvaluationResult()).isTrue();
+        assertThat(evaluationResource.getOutputObject()).isNotNull();
     }
 
 }

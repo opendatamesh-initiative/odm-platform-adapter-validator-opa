@@ -36,8 +36,10 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
             deletePolicyFromOpaServer(document.getPolicy().getName());
 
             EvaluationResource response = new EvaluationResource();
+            // TODO: create an object to map the results of OPA + remove explicit cast
             response.setPolicyEvaluationId(document.getPolicyEvaluationId());
-            response.setEvaluationResult(Boolean.valueOf((String)opaResult.get("result")));
+            Map opaResultResult = (Map) opaResult.get("result");
+            response.setEvaluationResult((Boolean) opaResultResult.get("allow"));
             response.setOutputObject(opaResult);
             return response;
 
