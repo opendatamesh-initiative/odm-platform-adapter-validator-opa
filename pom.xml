@@ -27,14 +27,14 @@ License.
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.4</version>
+		<version>2.7.13</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<groupId>org.opendatamesh</groupId>
 	<artifactId>odm-platform-up-policy-engine-opa</artifactId>
 	<name>OPA Policy Engine</name>
-	<description>Implementation of policy engine for OPA</description>
+	<description>Implementation of Policy Engine for OPA</description>
 	<version>1.0.0</version>
 	<url>https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</url>
 	<packaging>pom</packaging>
@@ -70,86 +70,9 @@ License.
 		</policyservice.mainclass>
 	</properties>
 
-	<dependencies>
-
-		<!-- Spring Framework-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<!-- Lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.24</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- TestContainers -->
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>testcontainers</artifactId>
-			<version>1.18.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>1.18.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>mysql</artifactId>
-			<version>1.18.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.testcontainers</groupId>
-			<artifactId>junit-jupiter</artifactId>
-			<version>1.18.3</version>
-			<scope>test</scope>
-		</dependency>
-
-
-		<!-- Tests -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.5.13</version>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<!-- ODM -->
-		<dependency>
-			<groupId>org.opendatamesh</groupId>
-			<artifactId>odm-platform-up-policy-engine-api</artifactId>
-			<version>1.0.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.opendatamesh</groupId>
-			<artifactId>odm-platform-core-commons</artifactId>
-			<version>1.0.0</version>
-			<scope>compile</scope>
-		</dependency>
-
-	</dependencies>
+	<modules>
+		<module>policy-engine-opa-server</module>
+	</modules>
 
 	<!-- Needed to publish mvn artifact to GitHub Packages -->
 	<profiles>
@@ -165,7 +88,7 @@ License.
 				<repository>
 					<id>github</id>
 					<name>GitHub Packages</name>
-					<url>https://maven.pkg.github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/</url>
+					<url>https://maven.pkg.github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/</url>
 				</repository>
 			</distributionManagement>
 		</profile>
