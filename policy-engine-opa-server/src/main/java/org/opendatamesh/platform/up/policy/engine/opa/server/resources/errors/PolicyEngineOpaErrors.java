@@ -6,8 +6,9 @@ public enum PolicyEngineOpaErrors implements ODMApiStandardErrors {
 
     SC400_OPA_SERVER_BAD_REQUEST ("40005", "OPA Bad Request error."),
     SC422_POLICY_SYNTAX_IS_INVALID ("42201", "Policy syntax is invalid"),
-    SC500_OPA_SERVER_INTERNAL_SERVER_ERROR ("50001", "OPA Internal Server Error"),
-    SC500_OPA_SERVER_NOT_REACHABLE ("50002", "OPA Server not reachable"),
+    SC500_01_OPA_SERVER_INTERNAL_SERVER_ERROR ("50001", "OPA Internal Server Error"),
+    SC500_02_OPA_SERVER_NOT_REACHABLE ("50002", "OPA Server not reachable"),
+    SC500_03_POLICY_ENGINE_OPA_SERVICE_ERROR("50003", "Policy Engine OPA Internal Server Error"),
     SC000_TBD ("00000", "TBD");
 
     private final String code;

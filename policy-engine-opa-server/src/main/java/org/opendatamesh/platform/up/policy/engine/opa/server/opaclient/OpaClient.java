@@ -1,6 +1,7 @@
 package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient;
 
-import org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.v1.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.EvaluationRequestResponse;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -38,8 +39,8 @@ public class OpaClient {
         restTemplate.delete(policiesUrl+"/"+id);
     }
 
-    public Map validateDocumentByPolicyId(String id, EvaluationRequestBody document) {
-        return restTemplate.postForObject(dataUrl+"/"+id, document, Map.class);
+    public EvaluationRequestResponse validateDocumentByPolicyId(String id, EvaluationRequestBody document) {
+        return restTemplate.postForObject(dataUrl+"/"+id, document, EvaluationRequestResponse.class);
     }
 
     public Map<String, Object> validateDocument(EvaluationRequestBody document) {

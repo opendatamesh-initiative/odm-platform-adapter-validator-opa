@@ -3,10 +3,13 @@ package org.opendatamesh.platform.up.policy.engine.opa.server.rest;
 import org.opendatamesh.platform.core.commons.servers.exceptions.BadRequestException;
 import org.opendatamesh.platform.core.commons.servers.exceptions.InternalServerException;
 import org.opendatamesh.platform.pp.policy.api.resources.PolicyResource;
+import org.opendatamesh.platform.pp.policy.api.resources.exceptions.PolicyApiStandardErrors;
 import org.opendatamesh.platform.up.policy.api.v1.controllers.AbstractPolicyEngineController;
 import org.opendatamesh.platform.up.policy.api.v1.resources.DocumentResource;
 import org.opendatamesh.platform.up.policy.api.v1.resources.EvaluationResource;
-import org.opendatamesh.platform.up.policy.engine.opa.server.opaclient.v1.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.api.v1.resources.errors.PolicyEngineApiStandardErrors;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.EvaluationRequestBody;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.EvaluationRequestResponse;
 import org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors.PolicyEngineOpaErrors;
 import org.opendatamesh.platform.up.policy.engine.opa.server.services.EvaluationService;
 import org.opendatamesh.platform.up.policy.engine.opa.server.services.PolicyService;
@@ -32,15 +35,21 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
         try {
 
             savePolicyOnOpaServer(document.getPolicy());
-            Map opaResult = requestEvaluationToOpaServer(document);
+            EvaluationRequestResponse opaResult = requestEvaluationToOpaServer(document);
             deletePolicyFromOpaServer(document.getPolicy().getName());
 
             EvaluationResource response = new EvaluationResource();
-            // TODO: create an object to map the results of OPA + remove explicit cast
             response.setPolicyEvaluationId(document.getPolicyEvaluationId());
-            Map opaResultResult = (Map) opaResult.get("result");
-            response.setEvaluationResult((Boolean) opaResultResult.get("allow"));
+            if(opaResult.getAllow() != null) {
+                response.setEvaluationResult(opaResult.getAllow());
+            } else {
+                throw new InternalServerException(
+                        PolicyEngineOpaErrors.SC500_03_POLICY_ENGINE_OPA_SERVICE_ERROR,
+                        "Error extracting [allow] attributres from OPA response"
+                );
+            }
             response.setOutputObject(opaResult);
+
             return response;
 
         } catch (HttpClientErrorException e) {
@@ -51,7 +60,7 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
                 );
             } else if (e.getRawStatusCode()==500) {
                 throw new InternalServerException(
-                        PolicyEngineOpaErrors.SC500_OPA_SERVER_INTERNAL_SERVER_ERROR,
+                        PolicyEngineOpaErrors.SC500_01_OPA_SERVER_INTERNAL_SERVER_ERROR,
                         e.getMessage()
                 );
             } else {
@@ -61,7 +70,7 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
             if (e.getCause() instanceof ConnectException) {
                 // handle connect exception
                 throw new InternalServerException(
-                        PolicyEngineOpaErrors.SC500_OPA_SERVER_NOT_REACHABLE,
+                        PolicyEngineOpaErrors.SC500_02_OPA_SERVER_NOT_REACHABLE,
                         e.getMessage()
                 );
             }
@@ -73,7 +82,7 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
         policyService.putPolicy(policy.getName(), policy.getRawContent());
     }
 
-    private Map requestEvaluationToOpaServer(DocumentResource document) {
+    private EvaluationRequestResponse requestEvaluationToOpaServer(DocumentResource document) {
         EvaluationRequestBody evaluationRequest = new EvaluationRequestBody();
         evaluationRequest.setInput(document.getObjectToEvaluate());
         return evaluationService.validateByPolicyId(document.getPolicy().getName(), evaluationRequest);
