@@ -1,0 +1,30 @@
+##########################
+# Spring
+##########################
+spring:
+  # Profile
+  profile: docker
+
+##########################
+# Server configuration
+##########################
+app:
+  workdir:
+
+server:
+  port: ${SPRING_PORT}
+  error:
+    include-message: always
+  servlet:
+    context-path: /api/v1/up/policy-engine
+timeout:
+  seconds: 30
+
+
+##########################
+# OPA configuration
+##########################
+opa:
+  url:
+    policies: http://${OPA_HOSTNAME}:${OPA_PORT}/v1/policies
+    data: http://${OPA_HOSTNAME}:${OPA_PORT}/v1/data
