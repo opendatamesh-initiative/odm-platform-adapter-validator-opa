@@ -1,8 +1,8 @@
-# Open Data Mesh Plane Utility Policyservice OPA
+# Open Data Mesh Utility Plane Services Policy Engine OPA
 
 [![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions)
 
-Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. 
+Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It uses the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to create, deploy and operate data product containers in a mesh architecture. 
 
 This repository contains an Adapter for [OPA](https://www.openpolicyagent.org/) (i.e., Open Policy Agent) 
 of the Policy Engine API service on the ODM Utility Plane.
