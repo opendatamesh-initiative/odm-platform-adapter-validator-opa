@@ -1,8 +1,11 @@
 # Open Data Mesh Plane Utility Policyservice OPA
 
-[![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/workflows/odm-platform-up-services-policy-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa/actions)
+[![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions)
 
-Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. This repository contains the services exposed by the utility policyservice plane.
+Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It use the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to to create, deploy and operate data product containers in a mesh architecture. 
+
+This repository contains an Adapter for [OPA](https://www.openpolicyagent.org/) (i.e., Open Policy Agent) 
+of the Policy Engine API service on the ODM Utility Plane.
 
 *_This project have dependencies from the project [odm-platform](https://github.com/opendatamesh-initiative/odm-platform)_
 
@@ -14,6 +17,7 @@ The project requires the following dependencies:
 * Java 11
 * Maven 3.8.6
 * Project  [odm-platform](https://github.com/opendatamesh-initiative/odm-platform)
+* [OPA Rootless](https://hub.docker.com/layers/openpolicyagent/opa/latest-rootless/images/sha256-b8d2ca87f0241531433d106473bbe3661b7c9be735c447daefa164f2c3942b8d?context=explore)
 
 ## Dependencies
 This project need some artifacts from the odm-platform project.
@@ -40,8 +44,8 @@ mvn clean install -DskipTests
 Clone the repository and move to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
-cd odm-platform-up-services-policy-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
+cd odm-platform-up-services-policy-engine-opa
 ```
 
 ### Compile project
@@ -55,14 +59,14 @@ mvn clean package spring-boot:repackage -DskipTests
 Run the application:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNAPSHOT.jar
+java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
 ```
 
 ### Stop application
 To stop the application type CTRL+C or just close the shell. To start it again re-execute the following command:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNAPSHOT.jar
+java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
 ```
 *Note: The application run in this way uses an in-memory instance of the H2 database. For this reason, the data is lost every time the application is terminated. On the next restart, the database is recreated from scratch.*
 
@@ -75,8 +79,8 @@ java -jar opa-policy-server/target/odm-platform-up-services-policy-opa-0.0.1-SNA
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
-cd odm-platform-up-services-policy-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
+cd odm-platform-up-services-policy-engine-opa
 ```
 
 Here you can find the Dockerfile which creates an image containing the application by directly copying it from the build executed locally (i.e. from `target` folder).
@@ -92,7 +96,7 @@ mvn clean package spring-boot:repackage -DskipTests
 The image generated from Dockerfile contains only the application. It requires an OPA server to run properly. If you do not already have an OPA server available, you can create one by running the following commands:
 
 ```bash
-docker run --name odmopa-opa-server -d -p 8181:8181  \
+docker run --name odm-opa-server -d -p 8181:8181  \
    openpolicyagent/opa:latest-rootless \
    run \
    --server \
@@ -103,102 +107,45 @@ docker run --name odmopa-opa-server -d -p 8181:8181  \
 
 Check that the OPA server has started correctly:
 ```bash
-docker logs odmopa-opa-server
+docker logs odm-opa-server
 ```
 
-### Run database
-The image generated from Dockerfile contains only the application. It requires a database to run properly. The supported databases are MySql and Postgres. If you do not already have a database available, you can create one by running the following commands:
-
-**MySql**
-```bash
-docker run --name odmopa-mysql-db -d -p 3306:3306  \
-   -e MYSQL_DATABASE=ODMPOLICY \
-   -e MYSQL_ROOT_PASSWORD=root \
-   mysql:8
-```
-
-**Postgres**
-```bash
-docker run --name odmopa-postgres-db -d -p 5432:5432  \
-   -e POSTGRES_DB=odmopadb \
-   -e POSTGRES_PASSWORD=postgres \
-   postgres:11-alpine
-```
-
-Check that the database has started correctly:
-
-**MySql**
-```bash
-docker logs odmopa-mysql-db
-```
-
-**Postgres**
-```bash
-docker logs odmopa-postgres-db
-```
 ### Build image
 Build the Docker image of the application and run it.
 
 *Before executing the following commands change properly the value of arguments `DATABASE_USERNAME`, `DATABASE_PASSWORD` and `DATABASE_URL`. Reported commands already contains right argument values if you have created the database using the commands above.
 
-**MySql**
 ```bash
-docker build -t odmopa-mysql-app . -f Dockerfile \
-   --build-arg DATABASE_URL=jdbc:mysql://localhost:3306/ODMPOLICY \
-   --build-arg DATABASE_USERNAME=root \
-   --build-arg DATABASE_PASSWORD=root \
-   --build-arg FLYWAY_SCRIPTS_DIR=mysql
-```
-
-**Postgres**
-```bash
-docker build -t odmopa-postgres-app . -f Dockerfile \
-   --build-arg DATABASE_URL=jdbc:postgresql://localhost:5432/odmopadb \
-   --build-arg DATABASE_USERNAME=postgres \
-   --build-arg DATABASE_PASSWORD=postgres \
-   --build-arg FLYWAY_SCRIPTS_DIR=postgresql
+docker build -t odm-platform-up-policy-engine-opa-server-app . -f Dockerfile 
 ```
 
 ### Run application
 Run the Docker image.
 
-*Note: Before executing the following commands remove the argument `--net host` if the database is not running on `localhost`*
+*Note: Before executing the following commands remove the argument `--net host` if OPA server is not running on `localhost`*
 
-**MySql**
 ```bash
-docker run --name odmopa-mysql-app -p 9001:9001 --net host odmopa-mysql-app
-```
-
-**Postgres**
-```bash
-docker run --name odmopa-postgres-app -p 9001:9001 --net host odmopa-postgres-app
+docker run --name odm-platform-up-policy-engine-opa-server-app -p 9009:9009 --net host odm-platform-up-policy-engine-opa-server-app
 ```
 
 ### Stop application
 
-*Before executing the following commands:
-* change the DB name to `odmopa-postgres-db` if you are using postgres and not mysql
-* change the instance name to `odmopa-postgres-app` if you are using postgres and not mysql
-
 ```bash
-docker stop odmopa-mysql-app
-docker stop odmopa-mysql-db
-docker stop odmopa-opa-server
+docker stop odm-platform-up-policy-engine-opa-server-app
+docker stop odm-opa-server
 ```
 To restart a stopped application execute the following commands:
 
 ```bash
-docker start odmopa-opa-server
-docker start odmopa-mysql-db
-docker start odmopa-mysql-app
+docker start odm-opa-server
+docker start odm-platform-up-policy-engine-opa-server-app
 ```
 
 To remove a stopped application to rebuild it from scratch execute the following commands :
 
 ```bash
-docker rm odmopa-mysql-app
-docker rm odmopa-mysql-db
-docker rm odmopa-opa-server
+docker rm odm-platform-up-policy-engine-opa-server-app
+docker rm odm-opa-server
 ```
 
 ## Run with Docker Compose
@@ -208,8 +155,8 @@ docker rm odmopa-opa-server
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-opa.git
-cd odm-platform-up-services-policy-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
+cd odm-platform-up-services-policy-engine-opa
 ```
 
 ### Compile project
@@ -220,16 +167,12 @@ mvn clean package spring-boot:repackage -DskipTests
 ```
 
 ### Build image
-Build the docker-compose images of the application, a default OPA server and a default PostgreSQL DB (v11.0).
+Build the docker-compose images of the application and a default OPA server.
 
 Before building it, create a `.env` file in the root directory of the project similar to the following one:
 ```.dotenv
 OPA_PORT=8181
-DATABASE_PORT=5433
-SPRING_PORT=9001
-DATABASE_NAME=mydb
-DATABASE_USERNAME=usr
-DATABASE_PASSWORD=pwd
+SPRING_PORT=9009
 ```
 
 Then, build the docker-compose file:
@@ -265,18 +208,10 @@ docker-compose build --no-cache
 
 You can invoke REST endpoints through *OpenAPI UI* available at the following url:
 
-* [http://localhost:9001/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html](http://localhost:9001/api/v1/planes/utility/policy-services/opa/swagger-ui/index.html)
+* [http://localhost:9009/api/v1/up/policy-engine/swagger-ui/index.html](http://localhost:9009/api/v1/up/policy-engine/swagger-ui/index.html)
 
 ## OPA server
 
 You can access to OPA Server browsing tho the following page:
 
 * [http://localhost:8181/](http://localhost:8181/)
-
-## Database
-
-If the application is running using an in memory instance of H2 database you can check the database content through H2 Web Console available at the following url:
-
-* [http://localhost:9001/api/v1/planes/utility/policy-services/opa//h2-console](http://localhost:9001/api/v1/planes/utility/policy-services/opa/h2-console)
-
-In all cases you can also use your favourite sql client providing the proper connection parameters
