@@ -2,7 +2,7 @@ package org.opendatamesh.platform.up.policy.engine.opa.opaclient;
 
 import org.junit.jupiter.api.Test;
 
-public class OpaClientTest {
+public class OpaClientIT {
 
     @Test
     public void getPolicies() {
