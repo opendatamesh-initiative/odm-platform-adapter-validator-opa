@@ -3,7 +3,6 @@ package org.opendatamesh.platform.up.policy.engine.opa.server.resources;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import javax.annotation.PostConstruct;
 import java.util.Map;
 
 @Data
@@ -17,8 +16,10 @@ public class EvaluationRequestResponse {
     @JsonProperty("result")
     private Map<String, Object> result;
 
-    @PostConstruct
-    private void setAllow() {
+    @JsonProperty("result")
+    public void setResult(Map<String, Object> result) {
+        // Custom setter to extract allow from result sub-object
+        this.result = result;
         try {
             this.allow = (boolean) result.get("allow");
         } catch (Exception e) {
