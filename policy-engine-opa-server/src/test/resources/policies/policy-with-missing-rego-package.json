@@ -1,0 +1,6 @@
+{
+  "name": "dataproduct",
+  "displayName": "Data Product Name Checker Policy",
+  "description": "Policy to check the name of a Data Product Object",
+  "rawContent": "default allow := false\n\nallow := true {                                     \n    startswith(input.name, \"dp-\")\n}"
+}

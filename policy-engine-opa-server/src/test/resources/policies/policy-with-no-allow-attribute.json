@@ -1,0 +1,6 @@
+{
+  "name": "dataproduct",
+  "displayName": "Data Product Name Checker Policy",
+  "description": "Policy to check the name of a Data Product Object",
+  "rawContent": "package dataproduct\n\ndefault correct_name := false\n\ncorrect_name := true {                                     \n    startswith(input.name, \"dp-\")\n}"
+}

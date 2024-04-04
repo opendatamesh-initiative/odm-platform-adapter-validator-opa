@@ -41,25 +41,11 @@ public abstract class PolicyEngineOpaApplicationIT extends ODMIntegrationTest {
 
 	protected ObjectMapper mapper;
 
-	protected final String POLICY_1 = "src/test/resources/policies/policy1.json";
+	protected final String POLICY = "src/test/resources/policies/policy1.json";
+	protected final String POLICY_WITH_NO_REGO_PACKAGE = "src/test/resources/policies/policy-with-missing-rego-package.json";
+	protected final String POLICY_WITH_NO_ALLOW_ATTRIBUTE = "src/test/resources/policies/policy-with-no-allow-attribute.json";
 
-	protected final String POLICY_1_UPDATED = "src/test/resources/policies/policy1-updated.json";
-
-	protected final String POLICY_2 = "src/test/resources/policies/policy2.json";
-
-	protected final String POLICY_3 = "src/test/resources/policies/policy3.json";
-
-	protected final String POLICY_VERSIONS = "src/test/resources/policies/policy-versions.json";
-
-	protected final String POLICY_SERVICESTYPE = "src/test/resources/policies/policy-servicestype.json";
-
-	protected final String SUITE_1 = "src/test/resources/suites/suite1.json";
-
-	protected final String DOCUMENT_1 = "src/test/resources/documents/document1.json";
-
-	protected final String DOCUMENT_2 = "src/test/resources/documents/document-servicestype.json";
-
-	protected final String DPD = "src/test/resources/documents/dpd.json";
+	protected final String DOCUMENT = "src/test/resources/documents/document1.json";
 
 	protected static final String OPA_DOCKER_IMAGE = "src/test/resources/opa/docker-compose.yml";
 

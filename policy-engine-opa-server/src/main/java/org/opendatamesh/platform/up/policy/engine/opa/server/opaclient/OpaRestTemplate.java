@@ -19,6 +19,7 @@ public class OpaRestTemplate {
         return restTemplateBuilder
                 .setConnectTimeout(Duration.ofSeconds(timeout))
                 .setReadTimeout(Duration.ofSeconds(timeout))
+                .errorHandler(new OpaRestTemplateResponseErrorHandler())
                 .build();
     }
 
