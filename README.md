@@ -62,15 +62,14 @@ Run the application:
 java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
 ```
 
+*Note: The application need a reachable OPA server listening on port 8181 to correctly work. See the section ["Run OPA server"](#run-opa-server) on how to run an OPA server with Docker.*
+
 ### Stop application
 To stop the application type CTRL+C or just close the shell. To start it again re-execute the following command:
 
 ```bash
 java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
 ```
-*Note: The application run in this way uses an in-memory instance of the H2 database. For this reason, the data is lost every time the application is terminated. On the next restart, the database is recreated from scratch.*
-
-*Note: The application need a reachable OPA server listening on port 8181 to correctly work*
 
 ## Run with Docker
 *_Dependencies must have been compiled to run this project._
@@ -112,8 +111,6 @@ docker logs odm-opa-server
 
 ### Build image
 Build the Docker image of the application and run it.
-
-*Before executing the following commands change properly the value of arguments `DATABASE_USERNAME`, `DATABASE_PASSWORD` and `DATABASE_URL`. Reported commands already contains right argument values if you have created the database using the commands above.
 
 ```bash
 docker build -t odm-platform-up-policy-engine-opa-server-app . -f Dockerfile 
