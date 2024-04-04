@@ -27,9 +27,9 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
     @Override
     public EvaluationResource evaluateDocument(DocumentResource document) {
         validateDocument(document);
-        savePolicyOnOpaServer(document.getPolicy());
-        EvaluationRequestResponse opaResult = requestEvaluationToOpaServer(document);
-        deletePolicyFromOpaServer(document.getPolicy().getName());
+        policyService.savePolicyOnOpaServer(document.getPolicy());
+        EvaluationRequestResponse opaResult = evaluationService.requestEvaluationToOpaServer(document);
+        policyService.deletePolicyFromOpaServer(document.getPolicy().getName());
         return prepareEvaluationResource(document, opaResult);
     }
 
@@ -80,20 +80,6 @@ public class PolicyEngineController extends AbstractPolicyEngineController {
                     "Package name in Rego policy [" + regoPackage + "] differs from policy name [" + policyName + "]. Check syntax."
             );
         }
-    }
-
-    private void savePolicyOnOpaServer(PolicyResource policy) {
-        policyService.putPolicy(policy.getName(), policy.getRawContent());
-    }
-
-    private EvaluationRequestResponse requestEvaluationToOpaServer(DocumentResource document) {
-        EvaluationRequestBody evaluationRequest = new EvaluationRequestBody();
-        evaluationRequest.setInput(document.getObjectToEvaluate());
-        return evaluationService.validateByPolicyId(document.getPolicy().getName(), evaluationRequest);
-    }
-
-    private void deletePolicyFromOpaServer(String policyId) {
-        policyService.deletePolicyById(policyId);
     }
 
     private static EvaluationResource prepareEvaluationResource(DocumentResource document, EvaluationRequestResponse opaResult) {

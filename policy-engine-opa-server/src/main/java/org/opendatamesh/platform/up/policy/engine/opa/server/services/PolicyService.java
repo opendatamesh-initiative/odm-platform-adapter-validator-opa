@@ -42,11 +42,19 @@ public class PolicyService {
         return policyResource;
     }
 
-    public void putPolicy(String id, String policy){
+    public void savePolicyOnOpaServer(PolicyResource policy) {
+        putPolicy(policy.getName(), policy.getRawContent());
+    }
+
+    private void putPolicy(String id, String policy){
         opaClient.updatePolicy(id, policy);
     }
 
-    public void deletePolicyById(String id){
+    public void deletePolicyFromOpaServer(String policyId) {
+        deletePolicyById(policyId);
+    }
+
+    private void deletePolicyById(String id){
         opaClient.deletePolicyById(id);
     }
 
