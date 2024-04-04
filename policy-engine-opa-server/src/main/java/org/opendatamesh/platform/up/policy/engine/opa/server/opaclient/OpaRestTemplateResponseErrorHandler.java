@@ -1,10 +1,11 @@
 package org.opendatamesh.platform.up.policy.engine.opa.server.opaclient;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.opendatamesh.platform.core.commons.servers.exceptions.BadRequestException;
 import org.opendatamesh.platform.core.commons.servers.exceptions.InternalServerException;
 import org.opendatamesh.platform.core.dpds.ObjectMapperFactory;
+import org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors.OpaErrorResource;
 import org.opendatamesh.platform.up.policy.engine.opa.server.resources.errors.PolicyEngineOpaErrors;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
@@ -25,11 +26,7 @@ public class OpaRestTemplateResponseErrorHandler implements ResponseErrorHandler
 
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
-        String responseBodyString = "no message available";
-        if (httpResponse.getBody() != null) {
-            JsonNode responseBody = objectMapper.readTree(httpResponse.getBody());
-            responseBodyString = responseBody.toString();
-        }
+        String responseBodyString = deserializeOpaError(httpResponse);
         if (httpResponse.getRawStatusCode() == 503) {
             throw new InternalServerException(
                     PolicyEngineOpaErrors.SC500_02_OPA_SERVER_NOT_REACHABLE,
@@ -49,4 +46,22 @@ public class OpaRestTemplateResponseErrorHandler implements ResponseErrorHandler
             );
         }
     }
+
+    private String deserializeOpaError(ClientHttpResponse httpResponse) {
+        String opaError = "no message available";
+        try {
+            if (httpResponse.getBody() != null) {
+                OpaErrorResource errorResource = objectMapper.readValue(httpResponse.getBody(), OpaErrorResource.class);
+                opaError = objectMapper.writeValueAsString(errorResource);
+            }
+        } catch (JsonProcessingException e) {
+            // Error serializing body as OpaErrorResource and then as String
+            opaError = "Error serializing OPA response as String";
+        } catch (IOException e) {
+            // Error extracting body from response
+            opaError = "Unknown OPA error";
+        }
+        return opaError;
+    }
+
 }
