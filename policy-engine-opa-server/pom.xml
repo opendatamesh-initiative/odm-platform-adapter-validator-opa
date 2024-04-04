@@ -28,7 +28,7 @@ License.
         <groupId>org.opendatamesh</groupId>
         <artifactId>odm-platform-up-policy-engine-opa</artifactId>
         <version>1.0.0</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath>../</relativePath> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>org.opendatamesh</groupId>
