@@ -1,4 +1,4 @@
-name: odm-platform-up-services-policy-opa CI/CD
+name: odm-platform-up-services-policy-engine-opa CI/CD
 on:
   push:
     tags:

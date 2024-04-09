@@ -1,4 +1,4 @@
-name: odm-platform-up-services-policy-opa CI
+name: odm-platform-up-services-policy-engine-opa CI
 on:
   push:
     branches:
