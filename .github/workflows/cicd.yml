@@ -4,7 +4,7 @@ on:
     tags:
       - '*'
 env:
-  IMAGE_NAME: odm-platform-up-services-policy-opa
+  IMAGE_NAME: odm-platform-up-services-policy-engine-opa
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
