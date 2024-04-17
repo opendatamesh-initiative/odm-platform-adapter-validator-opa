@@ -3,6 +3,6 @@ package xpolicy
 default allow := false
 
 allow := true {
-startswith(input.name, "X")
-endswith(input.name, "x")
+    startswith(input.name, "X")
+    endswith(input.name, "x")
 }
