@@ -6,7 +6,7 @@ import org.opendatamesh.platform.core.commons.clients.resources.ErrorRes;
 import org.opendatamesh.platform.pp.policy.api.resources.PolicyResource;
 import org.opendatamesh.platform.up.validator.api.resources.DocumentResource;
 import org.opendatamesh.platform.up.validator.api.resources.EvaluationResource;
-import org.opendatamesh.platform.adapter.validator.opa.PolicyEngineOpaApplicationIT;
+import org.opendatamesh.platform.adapter.validator.opa.ValidatorOpaApplicationIT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
@@ -16,7 +16,7 @@ import java.io.IOException;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
-public class PolicyEngineControllerIT extends PolicyEngineOpaApplicationIT {
+public class ValidatorControllerIT extends ValidatorOpaApplicationIT {
 
     @Test
     public void evaluateDocument() throws IOException {

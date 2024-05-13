@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class PolicyEngineOpaApplication {
+public class ValidatorOpaApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(PolicyEngineOpaApplication.class, args);
+        SpringApplication.run(ValidatorOpaApplication.class, args);
     }
 
 }

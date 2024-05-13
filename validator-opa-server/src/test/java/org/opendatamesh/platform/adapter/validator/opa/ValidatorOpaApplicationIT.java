@@ -3,11 +3,11 @@ package org.opendatamesh.platform.adapter.validator.opa;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.opendatamesh.platform.adapter.validator.opa.server.ValidatorOpaApplication;
 import org.opendatamesh.platform.core.commons.test.ODMIntegrationTest;
 import org.opendatamesh.platform.core.commons.clients.resources.ErrorRes;
 import org.opendatamesh.platform.core.dpds.ObjectMapperFactory;
 import org.opendatamesh.platform.pp.policy.api.resources.exceptions.PolicyApiStandardErrors;
-import org.opendatamesh.platform.adapter.validator.opa.server.PolicyEngineOpaApplication;
 import org.opendatamesh.platform.up.validator.api.clients.ValidatorClientImpl;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -29,8 +29,8 @@ import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 @ExtendWith(SpringExtension.class)
 @Testcontainers
 @ActiveProfiles("test")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { PolicyEngineOpaApplication.class })
-public abstract class PolicyEngineOpaApplicationIT extends ODMIntegrationTest {
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = { ValidatorOpaApplication.class })
+public abstract class ValidatorOpaApplicationIT extends ODMIntegrationTest {
 
 	@LocalServerPort
 	protected String port;
