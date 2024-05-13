@@ -1,6 +1,6 @@
 package org.opendatamesh.platform.adapter.validator.opa.server.services;
 
-import org.opendatamesh.platform.up.policy.api.v1.resources.DocumentResource;
+import org.opendatamesh.platform.up.validator.api.resources.DocumentResource;
 import org.opendatamesh.platform.adapter.validator.opa.server.opaclient.OpaClient;
 import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestBody;
 import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestResponse;

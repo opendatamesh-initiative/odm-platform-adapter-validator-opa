@@ -2,9 +2,9 @@ package org.opendatamesh.platform.adapter.validator.opa.server.rest;
 
 import org.opendatamesh.platform.adapter.validator.opa.server.services.PolicyService;
 import org.opendatamesh.platform.core.commons.servers.exceptions.UnprocessableEntityException;
-import org.opendatamesh.platform.up.policy.api.v1.controllers.AbstractValidatorController;
-import org.opendatamesh.platform.up.policy.api.v1.resources.DocumentResource;
-import org.opendatamesh.platform.up.policy.api.v1.resources.EvaluationResource;
+import org.opendatamesh.platform.up.validator.api.controllers.AbstractValidatorController;
+import org.opendatamesh.platform.up.validator.api.resources.DocumentResource;
+import org.opendatamesh.platform.up.validator.api.resources.EvaluationResource;
 import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestResponse;
 import org.opendatamesh.platform.adapter.validator.opa.server.resources.errors.ValidatorOpaApiErrors;
 import org.opendatamesh.platform.adapter.validator.opa.server.services.EvaluationService;

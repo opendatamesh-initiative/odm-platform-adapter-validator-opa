@@ -8,7 +8,7 @@ import org.opendatamesh.platform.core.commons.clients.resources.ErrorRes;
 import org.opendatamesh.platform.core.dpds.ObjectMapperFactory;
 import org.opendatamesh.platform.pp.policy.api.resources.exceptions.PolicyApiStandardErrors;
 import org.opendatamesh.platform.adapter.validator.opa.server.PolicyEngineOpaApplication;
-import org.opendatamesh.platform.up.policy.api.v1.clients.ValidatorClientImpl;
+import org.opendatamesh.platform.up.validator.api.clients.ValidatorClientImpl;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
