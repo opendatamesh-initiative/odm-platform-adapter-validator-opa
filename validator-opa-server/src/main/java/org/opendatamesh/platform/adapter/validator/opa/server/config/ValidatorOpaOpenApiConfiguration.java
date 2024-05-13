@@ -17,14 +17,14 @@ public class ValidatorOpaOpenApiConfiguration {
         return new OpenAPI()
                 .components(new Components())
                 .info(new Info()
-                        .title("ODM Platform Utility Plane Policy Engine OPA API Reference")
-                        .summary("This page describe tha API exposed by the Policy Engine OPA Server of the Utility Plane " +
+                        .title("ODM Platform Adapter Validator OPA API Reference")
+                        .summary("This page describe tha API exposed by the Validator OPA Server of the Adapters of the Utility Plane " +
                                 "of the Open Data Mesh Platform.")
                         .description(
-                                "This page describe tha API exposed by the Policy Engine OPA Server of the Utility Plane of the Open Data Mesh Platform." +
+                                "This page describe tha API exposed by the Validator OPA Server of the Adapters of the Utility Plane of the Open Data Mesh Platform." +
 
                                 "\r\n# Overview" +
-                                "\r\nThe Policy Engine OPA Module of the Open Data Mesh platform manages the evaluation requests for OPA policies"
+                                "\r\nThe Validator OPA Module of the Open Data Mesh platform manages the evaluation requests for OPA policies"
                         )
                         .version("0.9.0")
                         .license(new License().name("Apache 2.0").url("http://springdoc.org"))
