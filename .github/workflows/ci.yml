@@ -1,4 +1,4 @@
-name: odm-platform-up-adapter-validator-opa CI
+name: odm-platform-adapter-validator-opa CI
 on:
   push:
     branches:
