@@ -2,7 +2,7 @@ FROM openjdk:17-alpine
 
 VOLUME /tmp
 
-COPY policy-engine-opa-server/target/odm-platform-up-policy-engine-opa-server-*.jar ./application.jar
+COPY validator-opa-server/target/odm-platform-adapter-validator-opa-server-*.jar ./application.jar
 
 ARG SPRING_PROFILES_ACTIVE=docker
 ARG JAVA_OPTS

@@ -18,7 +18,7 @@ services:
       - opa:/var/lib/opa/data:rw
 
   # Spring boot app
-  odm-platform-up-services-policy-engine-opa:
+  odm-platform-up-adapter-validator-opa:
     depends_on:
       - opa
     build:

@@ -1,4 +1,4 @@
-name: odm-platform-up-services-policy-engine-opa CI
+name: odm-platform-up-adapter-validator-opa CI
 on:
   push:
     branches:
@@ -35,4 +35,4 @@ jobs:
       - name: Execute tests with Maven
         run: |
           mvn -B test -Dspring.profiles.active=test -Dtest=OpaClientIT -DfailIfNoTests=false
-          mvn -B test -Dspring.profiles.active=test -Dtest=PolicyEngineControllerIT -DfailIfNoTests=false
+          mvn -B test -Dspring.profiles.active=test -Dtest=ValidatorControllerIT -DfailIfNoTests=false

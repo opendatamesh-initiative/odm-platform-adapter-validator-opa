@@ -1,6 +1,6 @@
-# Open Data Mesh Utility Plane Services Policy Engine OPA
+# Open Data Mesh Adapter Validator OPA
 
-[![Build](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/workflows/odm-platform-up-services-policy-engine-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa/actions)
+[![Build](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa/workflows/odm-platform-adapter-validator-opa%20CI/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa/actions) [![Release](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa/workflows/odm-platform-adapter-validator-opa%20CI%2FCD/badge.svg)](https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa/actions)
 
 Open Data Mesh Platform is a platform that manages the full lifecycle of a data product from deployment to retirement. It uses the [Data Product Descriptor Specification](https://dpds.opendatamesh.org/) to create, deploy and operate data product containers in a mesh architecture. 
 
@@ -44,8 +44,8 @@ mvn clean install -DskipTests
 Clone the repository and move to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
-cd odm-platform-up-services-policy-engine-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa.git
+cd odm-platform-adapter-validator-opa
 ```
 
 ### Compile project
@@ -59,7 +59,7 @@ mvn clean package spring-boot:repackage -DskipTests
 Run the application:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
+java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.0.jar
 ```
 
 *Note: The application need a reachable OPA server listening on port 8181 to correctly work. See the section ["Run OPA server"](#run-opa-server) on how to run an OPA server with Docker.*
@@ -68,7 +68,7 @@ java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.
 To stop the application type CTRL+C or just close the shell. To start it again re-execute the following command:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.0.0.jar
+java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.0.jar
 ```
 
 ## Run with Docker
@@ -78,8 +78,8 @@ java -jar opa-policy-server/target/odm-platform-up-services-policy-engine-opa-1.
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
-cd odm-platform-up-services-policy-engine-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa.git
+cd odm-platform-adapter-validator-opa
 ```
 
 Here you can find the Dockerfile which creates an image containing the application by directly copying it from the build executed locally (i.e. from `target` folder).
@@ -152,8 +152,8 @@ docker rm odm-opa-server
 Clone the repository and move it to the project root folder
 
 ```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa.git
-cd odm-platform-up-services-policy-engine-opa
+git git clone https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa.git
+cd odm-platform-adapter-validator-opa
 ```
 
 ### Compile project

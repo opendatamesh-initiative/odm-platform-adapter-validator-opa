@@ -1,10 +1,10 @@
-name: odm-platform-up-services-policy-engine-opa CI/CD
+name: odm-platform-up-adapter-validator-opa CI/CD
 on:
   push:
     tags:
       - '*'
 env:
-  IMAGE_NAME: odm-platform-up-services-policy-engine-opa
+  IMAGE_NAME: odm-platform-up-adapter-validator-opa
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

@@ -32,11 +32,11 @@ License.
 	</parent>
 
 	<groupId>org.opendatamesh</groupId>
-	<artifactId>odm-platform-up-policy-engine-opa</artifactId>
-	<name>OPA Policy Engine</name>
-	<description>Implementation of Policy Engine for OPA</description>
+	<artifactId>odm-platform-adapter-validator-opa</artifactId>
+	<name>OPA Validator</name>
+	<description>Implementation Adapter of Validator for OPA</description>
 	<version>1.0.0</version>
-	<url>https://github.com/opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</url>
+	<url>https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa</url>
 	<packaging>pom</packaging>
 
 	<licenses>
@@ -47,9 +47,9 @@ License.
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</connection>
-		<developerConnection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</developerConnection>
-		<url>scm:git:git@github.com:opendatamesh-initiative/odm-platform-up-services-policy-engine-opa</url>
+		<connection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-adapter-validator-opa</connection>
+		<developerConnection>scm:git:git@github.com:opendatamesh-initiative/odm-platform-adapter-validator-opa</developerConnection>
+		<url>scm:git:git@github.com:opendatamesh-initiative/odm-platform-adapter-validator-opa</url>
 	</scm>
 
 	<developers>
@@ -66,12 +66,12 @@ License.
 		<maven.compiler.target>11</maven.compiler.target>
 		<maven.compiler.source>11</maven.compiler.source>
 		<policyservice.mainclass>
-			org.opendatamesh.platform.up.policy.engine.opa.server.PolicyEngineOpaApplication
+			org.opendatamesh.platform.adapter.validator.opa.server.PolicyEngineOpaApplication
 		</policyservice.mainclass>
 	</properties>
 
 	<modules>
-		<module>policy-engine-opa-server</module>
+		<module>validator-opa-server</module>
 	</modules>
 
 	<!-- Needed to publish mvn artifact to GitHub Packages -->
