@@ -113,7 +113,7 @@ docker logs odm-opa-server
 Build the Docker image of the application and run it.
 
 ```bash
-docker build -t odm-platform-up-policy-engine-opa-server-app . -f Dockerfile 
+docker build -t odm-platform-up-validator-opa-server-app . -f Dockerfile 
 ```
 
 ### Run application
@@ -122,26 +122,26 @@ Run the Docker image.
 *Note: Before executing the following commands remove the argument `--net host` if OPA server is not running on `localhost`*
 
 ```bash
-docker run --name odm-platform-up-policy-engine-opa-server-app -p 9009:9009 --net host odm-platform-up-policy-engine-opa-server-app
+docker run --name odm-platform-up-validator-opa-server-app -p 9009:9009 --net host odm-platform-up-validator-opa-server-app
 ```
 
 ### Stop application
 
 ```bash
-docker stop odm-platform-up-policy-engine-opa-server-app
+docker stop odm-platform-up-validator-opa-server-app
 docker stop odm-opa-server
 ```
 To restart a stopped application execute the following commands:
 
 ```bash
 docker start odm-opa-server
-docker start odm-platform-up-policy-engine-opa-server-app
+docker start odm-platform-up-validator-opa-server-app
 ```
 
 To remove a stopped application to rebuild it from scratch execute the following commands :
 
 ```bash
-docker rm odm-platform-up-policy-engine-opa-server-app
+docker rm odm-platform-up-validator-opa-server-app
 docker rm odm-opa-server
 ```
 
@@ -205,7 +205,7 @@ docker-compose build --no-cache
 
 You can invoke REST endpoints through *OpenAPI UI* available at the following url:
 
-* [http://localhost:9009/api/v1/up/policy-engine/swagger-ui/index.html](http://localhost:9009/api/v1/up/policy-engine/swagger-ui/index.html)
+* [http://localhost:9009/api/v1/up/validator/swagger-ui/index.html](http://localhost:9009/api/v1/up/validator/swagger-ui/index.html)
 
 ## OPA server
 
