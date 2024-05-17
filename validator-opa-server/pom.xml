@@ -27,13 +27,13 @@ License.
     <parent>
         <groupId>org.opendatamesh</groupId>
         <artifactId>odm-platform-adapter-validator-opa</artifactId>
-        <version>1.0.0</version>
+        <version>0.9.0</version>
         <relativePath>../</relativePath> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>org.opendatamesh</groupId>
     <artifactId>odm-platform-adapter-validator-opa-server</artifactId>
-    <version>1.0.0</version>
+    <version>0.9.0</version>
     <name>OPA Policy Engine Server</name>
     <description>Implementation of Policy Engine Server for OPA</description>
     <properties>
