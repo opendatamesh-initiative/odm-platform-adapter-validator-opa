@@ -1,6 +1,6 @@
 # Terraform Plan Validation Use Cases
 
-The `/examples` folder contains examples of Open Policy Agent (OPA) policies used to validate Terraform plans across
+This folder contains examples of Open Policy Agent (OPA) policies used to validate Terraform plans across
 various scenarios. Each example is made of a `.rego` file that contains the policy and a `.json` file that contains a
 Terraform plan output or a part of it (this has been converted in JSON format using the `terraform show` command).
 
