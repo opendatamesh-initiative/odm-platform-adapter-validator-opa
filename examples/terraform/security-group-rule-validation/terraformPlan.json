@@ -1,0 +1,276 @@
+{
+  "format_version": "1.1",
+  "terraform_version": "1.5.7",
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "module.http_sg",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "this",
+          "provider_name": "registry.terraform.io/terraform-aws-modules/security-group/aws",
+          "schema_version": 1,
+          "values": {
+            "description": "Security group with HTTP ports open for everybody (IPv4 CIDR), egress ports are all world open",
+            "egress": [
+              {
+                "cidr_blocks": ["0.0.0.0/0"],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "ingress": [
+              {
+                "cidr_blocks": ["0.0.0.0/0"],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "http-sg",
+            "revoke_rules_on_delete": false,
+            "tags": null,
+            "vpc_id": "vpc-0123456789abcdef"
+          }
+        },
+        {
+          "address": "aws_security_group.allow_tls",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "allow_tls",
+          "provider_name": "registry.terraform.io/hashicorp/aws",
+          "schema_version": 1,
+          "values": {
+            "description": "Allow TLS inbound traffic",
+            "egress": [
+              {
+                "cidr_blocks": ["0.0.0.0/0"],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "ingress": [
+              {
+                "cidr_blocks": ["10.0.0.0/8"],
+                "description": "TLS from VPC",
+                "from_port": 443,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 443
+              }
+            ],
+            "name": "allow_tls",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "allow_tls"
+            },
+            "vpc_id": "vpc-0123456789abcdef"
+          }
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "module.http_sg",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "this",
+      "provider_name": "registry.terraform.io/terraform-aws-modules/security-group/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "description": "Security group with HTTP ports open for everybody (IPv4 CIDR), egress ports are all world open",
+          "egress": [
+            {
+              "cidr_blocks": ["0.0.0.0/0"],
+              "description": "",
+              "from_port": 0,
+              "ipv6_cidr_blocks": [],
+              "prefix_list_ids": [],
+              "protocol": "-1",
+              "security_groups": [],
+              "self": false,
+              "to_port": 0
+            }
+          ],
+          "ingress": [
+            {
+              "cidr_blocks": ["0.0.0.0/0"],
+              "description": "",
+              "from_port": 80,
+              "ipv6_cidr_blocks": [],
+              "prefix_list_ids": [],
+              "protocol": "tcp",
+              "security_groups": [],
+              "self": false,
+              "to_port": 80
+            }
+          ],
+          "name": "http-sg",
+          "revoke_rules_on_delete": false,
+          "tags": null,
+          "vpc_id": "vpc-0123456789abcdef"
+        },
+        "after_unknown": {}
+      }
+    },
+    {
+      "address": "aws_security_group.allow_tls",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "allow_tls",
+      "provider_name": "registry.terraform.io/hashicorp/aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "description": "Allow TLS inbound traffic",
+          "egress": [
+            {
+              "cidr_blocks": ["0.0.0.0/0"],
+              "description": "",
+              "from_port": 0,
+              "ipv6_cidr_blocks": [],
+              "prefix_list_ids": [],
+              "protocol": "-1",
+              "security_groups": [],
+              "self": false,
+              "to_port": 0
+            }
+          ],
+          "ingress": [
+            {
+              "cidr_blocks": ["10.0.0.0/8"],
+              "description": "TLS from VPC",
+              "from_port": 443,
+              "ipv6_cidr_blocks": [],
+              "prefix_list_ids": [],
+              "protocol": "tcp",
+              "security_groups": [],
+              "self": false,
+              "to_port": 443
+            }
+          ],
+          "name": "allow_tls",
+          "revoke_rules_on_delete": false,
+          "tags": {
+            "Name": "allow_tls"
+          },
+          "vpc_id": "vpc-0123456789abcdef"
+        },
+        "after_unknown": {}
+      }
+    }
+  ],
+  "configuration": {
+    "provider_config": {
+      "aws": {
+        "name": "aws",
+        "version_constraint": "~> 4.0"
+      }
+    },
+    "root_module": {
+      "module_calls": {
+        "http_sg": {
+          "source": "terraform-aws-modules/security-group/aws",
+          "version": "4.17.1",
+          "expressions": {
+            "description": {
+              "constant_value": "Security group with HTTP ports open for everybody (IPv4 CIDR), egress ports are all world open"
+            },
+            "ingress_cidr_blocks": {
+              "constant_value": ["0.0.0.0/0"]
+            },
+            "name": {
+              "constant_value": "http-sg"
+            },
+            "vpc_id": {
+              "references": ["data.aws_vpc.default.id"]
+            }
+          }
+        }
+      },
+      "resources": [
+        {
+          "address": "aws_security_group.allow_tls",
+          "mode": "managed",
+          "type": "aws_security_group",
+          "name": "allow_tls",
+          "provider_config_key": "aws",
+          "expressions": {
+            "description": {
+              "constant_value": "Allow TLS inbound traffic"
+            },
+            "ingress": [
+              {
+                "cidr_blocks": {
+                  "constant_value": ["10.0.0.0/8"]
+                },
+                "description": {
+                  "constant_value": "TLS from VPC"
+                },
+                "from_port": {
+                  "constant_value": 443
+                },
+                "protocol": {
+                  "constant_value": "tcp"
+                },
+                "to_port": {
+                  "constant_value": 443
+                }
+              }
+            ],
+            "name": {
+              "constant_value": "allow_tls"
+            },
+            "tags": {
+              "constant_value": {
+                "Name": "allow_tls"
+              }
+            },
+            "vpc_id": {
+              "references": ["data.aws_vpc.default.id"]
+            }
+          }
+        }
+      ],
+      "data_sources": [
+        {
+          "address": "data.aws_vpc.default",
+          "mode": "data",
+          "type": "aws_vpc",
+          "name": "default",
+          "provider_config_key": "aws",
+          "expressions": {
+            "default": {
+              "constant_value": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}

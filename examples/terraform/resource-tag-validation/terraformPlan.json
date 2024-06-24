@@ -1,0 +1,68 @@
+{
+  "format_version": "1.2",
+  "terraform_version": "1.8.4",
+  "planned_values": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_s3_bucket.b",
+          "mode": "managed",
+          "type": "aws_s3_bucket",
+          "name": "b",
+          "provider_name": "aws",
+          "schema_version": 0,
+          "values": {
+            "acl": "private",
+            "bucket": "bucket",
+            "tags": {
+              "Environment": "Dev",
+              "Name": "My bucket"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "resource_changes": [
+    {
+      "address": "aws_s3_bucket.b",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "b",
+      "provider_name": "aws",
+      "change": {
+        "actions": ["create"],
+        "before": null,
+        "after": {
+          "acl": "private",
+          "bucket": "bucket",
+          "tags": {
+            "Environment": "Dev",
+            "Name": "My bucket"
+          }
+        }
+      }
+    }
+  ],
+  "configuration": {
+    "root_module": {
+      "resources": [
+        {
+          "address": "aws_s3_bucket.b",
+          "mode": "managed",
+          "type": "aws_s3_bucket",
+          "name": "b",
+          "provider_config_key": "aws",
+          "values": {
+            "acl": "private",
+            "bucket": "bucket",
+            "tags": {
+              "Environment": "Dev",
+              "Name": "My bucket"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
