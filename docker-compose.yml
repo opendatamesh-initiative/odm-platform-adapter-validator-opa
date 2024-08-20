@@ -21,15 +21,7 @@ services:
   odm-platform-up-adapter-validator-opa:
     depends_on:
       - opa
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        SPRING_PROFILES_ACTIVE: "docker"
-        JAVA_OPTS: ""
-        SPRING_PORT: "${SPRING_PORT}"
-        OPA_HOSTNAME: "opa"
-        OPA_PORT: "${OPA_PORT}"
+    image: opendatamesh/odm-platform-adapter-validator-opa:0.9.0
     env_file: .env
     ports:
       - "${SPRING_PORT}:${SPRING_PORT}"

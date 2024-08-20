@@ -146,35 +146,12 @@ docker rm odm-opa-server
 ```
 
 ## Run with Docker Compose
-*_Dependencies must have been compiled to run this project._
 
-### Clone repository
-Clone the repository and move it to the project root folder
-
-```bash
-git git clone https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa.git
-cd odm-platform-adapter-validator-opa
-```
-
-### Compile project
-You need to first execute the build locally by running the following command:
-
-```bash
-mvn clean package spring-boot:repackage -DskipTests
-```
-
-### Build image
-Build the docker-compose images of the application and a default OPA server.
-
-Before building it, create a `.env` file in the root directory of the project similar to the following one:
+Create a `.env` file in the root directory of the project similar to the following one:
 ```.dotenv
 OPA_PORT=8181
 SPRING_PORT=9009
-```
-
-Then, build the docker-compose file:
-```bash
-docker-compose build
+OPA_HOSTNAME="opa"
 ```
 
 ### Run application
@@ -194,10 +171,6 @@ To restart a stopped application execute the following commands:
 docker-compose up
 ```
 
-To rebuild it from scratch execute the following commands :
-```bash
-docker-compose build --no-cache
-```
 
 # Test it
 
