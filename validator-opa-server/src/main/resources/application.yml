@@ -4,3 +4,9 @@
 spring:
   profiles:
     active: dev
+server:
+  port: 9009
+  error:
+    include-message: always
+  servlet:
+    context-path: /api/v1/up/validator/

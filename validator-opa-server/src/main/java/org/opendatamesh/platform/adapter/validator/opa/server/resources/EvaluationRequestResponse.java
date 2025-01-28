@@ -1,30 +1,28 @@
 package org.opendatamesh.platform.adapter.validator.opa.server.resources;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import com.fasterxml.jackson.databind.JsonNode;
 
-import java.util.Map;
-
-@Data
 public class EvaluationRequestResponse {
 
     @JsonProperty("decision_id")
     private String decisionId;
+    private JsonNode result;
 
-    private Boolean allow;
 
-    @JsonProperty("result")
-    private Map<String, Object> result;
-
-    @JsonProperty("result")
-    public void setResult(Map<String, Object> result) {
-        // Custom setter to extract allow from result sub-object
-        this.result = result;
-        try {
-            this.allow = (boolean) result.get("allow");
-        } catch (Exception e) {
-            this.allow = null;
-        }
+    public String getDecisionId() {
+        return decisionId;
     }
 
+    public void setDecisionId(String decisionId) {
+        this.decisionId = decisionId;
+    }
+
+    public JsonNode getResult() {
+        return result;
+    }
+
+    public void setResult(JsonNode result) {
+        this.result = result;
+    }
 }

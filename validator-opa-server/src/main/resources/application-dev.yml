@@ -16,7 +16,7 @@ server:
   error:
     include-message: always
   servlet:
-    context-path: /api/v1/up/validator
+    context-path: /api/v1/up/validator/
 timeout:
   seconds: 30
 
