@@ -40,9 +40,9 @@ of the Policy Engine API service on the ODM Utility Plane.
 
 # How It Works
 
-The OPA validator, when it receives a policy evaluation request from the Policy Service, follows these steps:
+The policy evaluation process is composed of these steps:
 
-1. **Registers a New Policy on the OPA Server:**
+1. **Registration of a New Policy on the OPA Server:**
     - The package name is extracted from the policy code.
     - The URL to store the policy is composed based on this package name.
     - For example, if the policy has `package org.opendatamesh`, a new policy is created with:
@@ -51,10 +51,19 @@ The OPA validator, when it receives a policy evaluation request from the Policy 
       ```
 
 2. **Policy Validation:**
-    - The policy is validated using the evaluation request content. For example:
+    - The policy is validated using the evaluation request content.
+    - The input object passed for validation has this structure:
+      ```json
+      {
+      "input": {
+       // The policy event content (varies based on the event, but always includes currentState/afterState)
+      }
+      }
       ```
-      POST <...>/v1/data/org/opendatamesh/allow
-      ```
+    - An example of a validation call can be:
+       ```
+       POST <...>/v1/data/org/opendatamesh/allow
+       ```
     - The `/allow` part is required so that the OPA server response is always a simple `true` or `false` value, not a
       complex object (it must be like the **Basic Deny/Allow Decision** of the following list). This simplification
       ensures the validator receives consistent results when evaluating policies. Here are typical
@@ -118,17 +127,6 @@ The OPA validator, when it receives a policy evaluation request from the Policy 
              }
            }
            ```
-
-3. **Validation Input Object:**
-   The input object passed for validation has this structure:
-   ```json
-   {
-     "input": {
-       // The policy event content (varies based on the event, but always includes currentState/afterState)
-     }
-   }
-   ```
-
 4. **Result Collection and Policy Removal:**
    The result is collected, and the policy is then removed from the OPA server.
 
