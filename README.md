@@ -62,78 +62,24 @@ The policy evaluation process is composed of these steps:
       ```
     - An example of a validation call can be:
        ```
-       POST <...>/v1/data/org/opendatamesh/allow
+       POST <...>/v1/data/org/opendatamesh
        ```
-    - The `/allow` part is required so that the OPA server response is always a simple `true` or `false` value, not a
-      complex object (it must be like the **Basic Deny/Allow Decision** of the following list). This simplification
-      ensures the validator receives consistent results when evaluating policies. Here are typical
-      result structures from an OPA policy evaluation:
-
-        1. **Basic Deny/Allow Decision:**
-           A boolean decision indicating whether a request is allowed or denied.
-           ```json
-           {
-             "result": true  // Denotes that the action is allowed
-           }
-           ```
-
-        2. **Detailed Result with Explanation:**
-           A detailed response including additional context or reasoning behind the decision.
-           ```json
-           {
-             "result": false, // Denotes that the action is denied
-             "explanation": "User role does not have sufficient privileges"
-           }
-           ```
-
-        3. **Multiple Results for Array/Set Checks:**
-           If the query involves checking multiple objects or conditions.
-           ```json
-           {
-             "result": [
-               { "allow": true, "id": "resource_1" },
-               { "allow": false, "id": "resource_2" }
-             ]
-           }
-           ```
-
-        4. **Error in Policy Evaluation:**
-           The result object may contain an error message or code for evaluation issues.
-           ```json
-           {
-             "error": "invalid rule: unknown variable `foo`"
-           }
-           ```
-
-        5. **Full Response with Metadata:**
-           Additional metadata about the policy evaluation, such as matched rules.
-           ```json
-           {
-             "result": false, // Denotes that the action is denied
-             "metadata": {
-               "matched_rule": "allow_admin",
-               "timestamp": "2025-01-28T12:34:56Z"
-             }
-           }
-           ```
-
-        6. **Set of Allowed or Denied Actions:**
-           For complex policies, OPA may return sets of allowed or denied actions.
-           ```json
-           {
-             "result": {
-               "allowed_actions": ["read", "write"],
-               "denied_actions": ["delete"]
-             }
-           }
-           ```
+    - The supported structure of the validation output is:
+      ```json
+       {
+         "decision_id":"403573d5-4130-4303-bd9f-2686dcb1ab5e",
+         "result": {
+             "allow":false,
+             "otherAttribute": "another attribute of the response"
+         }
+       }
+      ```
+      where the `allow` attribute represents the evaluation result of the policy.
 4. **Result Collection and Policy Removal:**
    The result is collected, and the policy is then removed from the OPA server.
 
 ## How the Policy Code Should Be Structured
 
-The policy should be structured to ensure it returns a boolean decision for the `/allow` endpoint, providing a simple
-true/false result that the validator can easily interpret.
 Here is a policy example that satisfies this requirement:
 
 ```rego

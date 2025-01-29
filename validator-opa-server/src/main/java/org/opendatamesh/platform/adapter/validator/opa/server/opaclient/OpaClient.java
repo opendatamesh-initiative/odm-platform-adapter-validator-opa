@@ -1,7 +1,7 @@
 package org.opendatamesh.platform.adapter.validator.opa.server.opaclient;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestBody;
-import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestResponse;
 import org.springframework.web.client.RestTemplate;
 
 public class OpaClient {
@@ -29,8 +29,8 @@ public class OpaClient {
         restTemplate.delete(policiesUrl + "/" + path);
     }
 
-    public EvaluationRequestResponse validatePolicy(String path, EvaluationRequestBody document) {
-        return restTemplate.postForObject(dataUrl + "/" + path, document, EvaluationRequestResponse.class);
+    public JsonNode validatePolicy(String path, EvaluationRequestBody document) {
+        return restTemplate.postForObject(dataUrl + "/" + path, document, JsonNode.class);
     }
 
 }

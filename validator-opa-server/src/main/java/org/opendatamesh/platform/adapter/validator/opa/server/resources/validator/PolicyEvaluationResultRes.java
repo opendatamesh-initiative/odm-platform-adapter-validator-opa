@@ -1,6 +1,5 @@
 package org.opendatamesh.platform.adapter.validator.opa.server.resources.validator;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 public class PolicyEvaluationResultRes {
@@ -11,7 +10,7 @@ public class PolicyEvaluationResultRes {
     private Boolean evaluationResult;
 
     @Schema(description = "Extended result of the evaluation")
-    private OutputObject outputObject;
+    private Object outputObject;
 
     public Long getPolicyEvaluationId() {
         return policyEvaluationId;
@@ -29,33 +28,11 @@ public class PolicyEvaluationResultRes {
         this.evaluationResult = evaluationResult;
     }
 
-    public OutputObject getOutputObject() {
+    public Object getOutputObject() {
         return outputObject;
     }
 
-    public void setOutputObject(OutputObject outputObject) {
+    public void setOutputObject(Object outputObject) {
         this.outputObject = outputObject;
     }
-
-    public static class OutputObject {
-        private String message;
-        private JsonNode rawError;
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(String message) {
-            this.message = message;
-        }
-
-        public JsonNode getRawError() {
-            return rawError;
-        }
-
-        public void setRawError(JsonNode rawError) {
-            this.rawError = rawError;
-        }
-    }
-
 }
