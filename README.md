@@ -43,7 +43,7 @@ of the Policy Engine API service on the ODM Utility Plane.
 The policy evaluation process is composed of these steps:
 
 1. **Registration of a New Policy on the OPA Server:**
-    - The package name is extracted from the policy code.
+    - The package name is extracted from the policy code, it is mandatory and must be unique.
     - The URL to store the policy is composed based on this package name.
     - For example, if the policy has `package org.opendatamesh`, a new policy is created with:
       ```
