@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.opendatamesh.platform.adapter.validator.opa.ValidatorOpaApplicationIT;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class HealthIT extends ValidatorOpaApplicationIT {

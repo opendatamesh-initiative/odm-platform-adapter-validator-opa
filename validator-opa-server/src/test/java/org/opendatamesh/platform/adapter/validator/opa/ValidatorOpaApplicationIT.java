@@ -52,16 +52,9 @@ public abstract class ValidatorOpaApplicationIT {
     // private/protected to make it recreate for each test
     // private/protected static final to make it shared with all tests
     @Container
-    protected static final DockerComposeContainer opaServer =
+    protected final DockerComposeContainer opaServer =
             new DockerComposeContainer(new File(OPA_DOCKER_IMAGE))
                     .withExposedService("opa", 8181);
-
-    @DynamicPropertySource
-    static void opaServerProperties(DynamicPropertyRegistry registry) {
-        String baseUrl = "http://localhost:" + opaServer.getServicePort("opa", 8181);
-        registry.add("opa.url.policies", () -> baseUrl + "/v1/policies");
-        registry.add("opa.url.data", () -> baseUrl + "/v1/data");
-    }
 
     @PostConstruct
     public void init() {
