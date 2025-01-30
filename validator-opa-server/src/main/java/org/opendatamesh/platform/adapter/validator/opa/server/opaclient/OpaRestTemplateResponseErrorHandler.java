@@ -2,11 +2,7 @@ package org.opendatamesh.platform.adapter.validator.opa.server.opaclient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.opendatamesh.platform.adapter.validator.opa.server.resources.errors.ValidatorOpaApiErrors;
-import org.opendatamesh.platform.core.commons.servers.exceptions.BadRequestException;
-import org.opendatamesh.platform.core.commons.servers.exceptions.InternalServerException;
-import org.opendatamesh.platform.core.dpds.ObjectMapperFactory;
-import org.opendatamesh.platform.adapter.validator.opa.server.resources.errors.OpaErrorResource;
+import org.opendatamesh.platform.adapter.validator.opa.server.resources.errors.opa.OpaErrorResource;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.ResponseErrorHandler;
@@ -16,7 +12,7 @@ import java.io.IOException;
 @Component
 public class OpaRestTemplateResponseErrorHandler implements ResponseErrorHandler {
 
-    private ObjectMapper objectMapper = ObjectMapperFactory.JSON_MAPPER;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
@@ -27,24 +23,7 @@ public class OpaRestTemplateResponseErrorHandler implements ResponseErrorHandler
     @Override
     public void handleError(ClientHttpResponse httpResponse) throws IOException {
         String responseBodyString = deserializeOpaError(httpResponse);
-        if (httpResponse.getRawStatusCode() == 503) {
-            throw new InternalServerException(
-                    ValidatorOpaApiErrors.SC500_02_OPA_SERVER_NOT_REACHABLE,
-                    responseBodyString
-            );
-        } else if (httpResponse.getStatusCode().is5xxServerError()) {
-            //Handle SERVER_ERROR
-            throw new InternalServerException(
-                    ValidatorOpaApiErrors.SC500_01_OPA_SERVER_INTERNAL_SERVER_ERROR,
-                    responseBodyString
-            );
-        } else if (httpResponse.getStatusCode().is4xxClientError()) {
-            //Handle CLIENT_ERROR
-            throw new BadRequestException(
-                    ValidatorOpaApiErrors.SC400_OPA_SERVER_BAD_REQUEST,
-                    responseBodyString
-            );
-        }
+
     }
 
     private String deserializeOpaError(ClientHttpResponse httpResponse) {

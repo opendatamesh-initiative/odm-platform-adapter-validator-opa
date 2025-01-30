@@ -1,98 +1,43 @@
 package org.opendatamesh.platform.adapter.validator.opa.server.rest;
 
-import org.opendatamesh.platform.adapter.validator.opa.server.services.PolicyService;
-import org.opendatamesh.platform.core.commons.servers.exceptions.UnprocessableEntityException;
-import org.opendatamesh.platform.up.validator.api.controllers.AbstractValidatorController;
-import org.opendatamesh.platform.up.validator.api.resources.DocumentResource;
-import org.opendatamesh.platform.up.validator.api.resources.EvaluationResource;
-import org.opendatamesh.platform.adapter.validator.opa.server.resources.EvaluationRequestResponse;
-import org.opendatamesh.platform.adapter.validator.opa.server.resources.errors.ValidatorOpaApiErrors;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.opendatamesh.platform.adapter.validator.opa.server.resources.validator.PolicyEvaluationRequestRes;
+import org.opendatamesh.platform.adapter.validator.opa.server.resources.validator.PolicyEvaluationResultRes;
 import org.opendatamesh.platform.adapter.validator.opa.server.services.EvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
-public class ValidatorController extends AbstractValidatorController {
-
-    @Autowired
-    private PolicyService policyService;
+@RequestMapping(value = "/evaluate-policy")
+@Tag(
+        name = "Policies evaluation API",
+        description = "API to evaluate one policy for a given object"
+)
+public class ValidatorController {
 
     @Autowired
     private EvaluationService evaluationService;
 
-    @Override
-    public EvaluationResource evaluateDocument(DocumentResource document) {
-        validateDocument(document);
-        policyService.savePolicyOnOpaServer(document.getPolicy());
-        EvaluationRequestResponse opaResult = evaluationService.requestEvaluationToOpaServer(document);
-        policyService.deletePolicyFromOpaServer(document.getPolicy().getName());
-        return prepareEvaluationResource(document, opaResult);
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(
+            summary = "Evaluate an object",
+            description = "Evaluate an object against the provided policy",
+            tags = {"Policies evaluation API"}
+    )
+    public PolicyEvaluationResultRes evaluate(
+            @Parameter(description = "JSON object containing the object to be evaluated and the policy to validate against")
+            @Valid @RequestBody PolicyEvaluationRequestRes policyEvaluationRequest
+    ) {
+        return evaluationService.validatePolicy(policyEvaluationRequest);
     }
 
-    private void validateDocument(DocumentResource document) {
-        if (ObjectUtils.isEmpty(document.getPolicy())) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_01_UNPROCESSABLE_POLICY,
-                    "Policy is empty. The policy object must be provided."
-            );
-        }
-        if (ObjectUtils.isEmpty(document.getPolicy().getName())) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_01_UNPROCESSABLE_POLICY,
-                    "Policy name is empty. The policy name must be provided."
-            );
-        }
-        if (!StringUtils.hasText(document.getPolicy().getRawContent())) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_01_UNPROCESSABLE_POLICY,
-                    "Policy raw content is empty. The policy raw content (Rego policy) must be provided."
-            );
-        }
-        validatePolicyName(document.getPolicy().getName(), document.getPolicy().getRawContent());
-        if (ObjectUtils.isEmpty(document.getObjectToEvaluate())) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_02_UNPROCESSABLE_INPUT_OBJECT,
-                    "Object to evaluate is empty. The object to validate the policy against must be provided."
-            );
-        }
-    }
-
-    private void validatePolicyName(String policyName, String rawPolicy) {
-        String regoPackage = null;
-        String rawPolicyFirstLine = rawPolicy.split("\n")[0];
-        if (rawPolicyFirstLine.contains("package")) {
-            regoPackage = rawPolicyFirstLine.replace("package", "").trim();
-        }
-
-        if (StringUtils.isEmpty(regoPackage)) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_03_POLICY_SYNTAX_IS_INVALID,
-                    "Missing package declaration in Rego policy. Check syntax."
-            );
-        }
-        if (!regoPackage.equals(policyName)) {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_03_POLICY_SYNTAX_IS_INVALID,
-                    "Package name in Rego policy [" + regoPackage + "] differs from policy name [" + policyName + "]. Check syntax."
-            );
-        }
-    }
-
-    private static EvaluationResource prepareEvaluationResource(DocumentResource document, EvaluationRequestResponse opaResult) {
-        EvaluationResource response = new EvaluationResource();
-        response.setPolicyEvaluationId(document.getPolicyEvaluationId());
-        if(opaResult.getAllow() != null) {
-            response.setEvaluationResult(opaResult.getAllow());
-        } else {
-            throw new UnprocessableEntityException(
-                    ValidatorOpaApiErrors.SC422_03_POLICY_SYNTAX_IS_INVALID,
-                    "Error extracting [allow] attribute from OPA response. Check the Rego policy's syntax."
-            );
-        }
-        response.setOutputObject(opaResult);
-        return response;
-    }
 
 }
