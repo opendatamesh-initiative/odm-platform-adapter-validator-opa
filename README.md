@@ -135,7 +135,7 @@ mvn clean package spring-boot:repackage -DskipTests
 Run the application:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.0.jar
+java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.1.jar
 ```
 
 *Note: The application need a reachable OPA server listening on port 8181 to correctly work. See the
@@ -146,7 +146,7 @@ section ["Run OPA server"](#run-opa-server) on how to run an OPA server with Doc
 To stop the application type CTRL+C or just close the shell. To start it again re-execute the following command:
 
 ```bash
-java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.0.jar
+java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.1.jar
 ```
 
 ## Run with Docker
