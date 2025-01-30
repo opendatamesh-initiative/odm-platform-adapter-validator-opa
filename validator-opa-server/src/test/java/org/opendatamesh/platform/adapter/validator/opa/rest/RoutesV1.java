@@ -1,7 +1,8 @@
 package org.opendatamesh.platform.adapter.validator.opa.rest;
 
 public enum RoutesV1 {
-    EVALUATE_POLICY("/evaluate-policy");
+    EVALUATE_POLICY("/evaluate-policy"),
+    HEALTH_CHECK("/actuator/health");
 
     private final String path;
 
