@@ -32,9 +32,9 @@ public class OpaClient {
         restTemplate.delete(policiesUrl + "/" + path);
     }
 
-    public JsonNode validatePolicy(String path, EvaluationRequestBody document,boolean verbose ) {
+    public JsonNode validatePolicy(String path, EvaluationRequestBody document, Boolean verbose) {
         String url = dataUrl + "/" + path;
-        if (verbose && loggingLevel != null && !loggingLevel.trim().isEmpty()) {
+        if (verbose != null && Boolean.TRUE.equals(verbose) && loggingLevel != null && !loggingLevel.trim().isEmpty()) {
             url += "?explain=" + loggingLevel + "&pretty=true";
         }
         return restTemplate.postForObject(url, document, JsonNode.class);

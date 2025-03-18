@@ -7,6 +7,7 @@ public class PolicyEvaluationRequestRes {
     private Long policyEvaluationId;
     private PolicyResource policy;
     private JsonNode objectToEvaluate;
+    private Boolean verbose;
 
     public Long getPolicyEvaluationId() {
         return policyEvaluationId;
@@ -30,5 +31,13 @@ public class PolicyEvaluationRequestRes {
 
     public void setObjectToEvaluate(JsonNode objectToEvaluate) {
         this.objectToEvaluate = objectToEvaluate;
+    }
+
+    public Boolean getVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(Boolean verbose) {
+        this.verbose = verbose;
     }
 }

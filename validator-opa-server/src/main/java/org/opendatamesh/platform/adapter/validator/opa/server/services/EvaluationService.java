@@ -27,7 +27,7 @@ public class EvaluationService {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public PolicyEvaluationResultRes validatePolicy(PolicyEvaluationRequestRes policyEvaluationRequest, boolean verbose) {
+    public PolicyEvaluationResultRes validatePolicy(PolicyEvaluationRequestRes policyEvaluationRequest) {
         validatePolicyRequest(policyEvaluationRequest);
         String path = extractPackagePath(policyEvaluationRequest.getPolicy().getRawContent());
         if (!StringUtils.hasText(path)) {
@@ -42,7 +42,7 @@ public class EvaluationService {
             evaluationRequest.setInput(policyEvaluationRequest.getObjectToEvaluate());
 
             logger.info("Validating policy at: {}", path);
-            JsonNode opaResult = opaClient.validatePolicy(path, evaluationRequest, verbose);
+            JsonNode opaResult = opaClient.validatePolicy(path, evaluationRequest, policyEvaluationRequest.getVerbose());
             logger.info("Policy: {}, validation result: {}", policyEvaluationRequest.getPolicy().getName(), new ObjectMapper().writeValueAsString(opaResult));
             return buildEvaluationResult(policyEvaluationRequest, opaResult);
         } catch (Exception e) {
