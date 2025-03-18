@@ -34,9 +34,10 @@ public class ValidatorController {
     )
     public PolicyEvaluationResultRes evaluate(
             @Parameter(description = "JSON object containing the object to be evaluated and the policy to validate against")
-            @Valid @RequestBody PolicyEvaluationRequestRes policyEvaluationRequest
+            @Valid @RequestBody PolicyEvaluationRequestRes policyEvaluationRequest,
+            @RequestParam(required = false, defaultValue = "false") boolean verbose
     ) {
-        return evaluationService.validatePolicy(policyEvaluationRequest);
+        return evaluationService.validatePolicy(policyEvaluationRequest, verbose);
     }
 
 

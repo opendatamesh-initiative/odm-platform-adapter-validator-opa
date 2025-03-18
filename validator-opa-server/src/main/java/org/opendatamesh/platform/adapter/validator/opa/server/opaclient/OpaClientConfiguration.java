@@ -16,10 +16,13 @@ public class OpaClientConfiguration {
     @Value("${opa.url.data}")
     private String dataUrl;
 
+    @Value("${opa.url.loggingLevel:#{null}}")
+    private String loggingLevel;
+
     @Bean
     public OpaClient opaClient()
     {
-        return new OpaClient(policiesUrl, dataUrl, timeout);
+        return new OpaClient(policiesUrl, dataUrl, timeout, loggingLevel);
     }
 
 }
