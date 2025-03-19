@@ -12,13 +12,16 @@ public class OpaClient {
 
     String dataUrl;
 
+    String loggingLevel;
+
     Long timeout;
 
-    public OpaClient(String policiesUrl, String dataUrl, Long timeout) {
+    public OpaClient(String policiesUrl, String dataUrl, Long timeout, String loggingLevel) {
         this.policiesUrl = policiesUrl;
         this.dataUrl = dataUrl;
         this.timeout = timeout;
         this.restTemplate = new OpaRestTemplate(timeout).buildRestTemplate();
+        this.loggingLevel = loggingLevel;
     }
 
     public void createPolicy(String path, String policy) {
@@ -29,8 +32,11 @@ public class OpaClient {
         restTemplate.delete(policiesUrl + "/" + path);
     }
 
-    public JsonNode validatePolicy(String path, EvaluationRequestBody document) {
-        return restTemplate.postForObject(dataUrl + "/" + path, document, JsonNode.class);
+    public JsonNode validatePolicy(String path, EvaluationRequestBody document, Boolean verbose) {
+        String url = dataUrl + "/" + path;
+        if (verbose != null && Boolean.TRUE.equals(verbose) && loggingLevel != null && !loggingLevel.trim().isEmpty()) {
+            url += "?explain=" + loggingLevel + "&pretty=true";
+        }
+        return restTemplate.postForObject(url, document, JsonNode.class);
     }
-
 }

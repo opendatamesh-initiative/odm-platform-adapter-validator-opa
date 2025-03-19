@@ -42,7 +42,7 @@ public class EvaluationService {
             evaluationRequest.setInput(policyEvaluationRequest.getObjectToEvaluate());
 
             logger.info("Validating policy at: {}", path);
-            JsonNode opaResult = opaClient.validatePolicy(path, evaluationRequest);
+            JsonNode opaResult = opaClient.validatePolicy(path, evaluationRequest, policyEvaluationRequest.getVerbose());
             logger.info("Policy: {}, validation result: {}", policyEvaluationRequest.getPolicy().getName(), new ObjectMapper().writeValueAsString(opaResult));
             return buildEvaluationResult(policyEvaluationRequest, opaResult);
         } catch (Exception e) {
