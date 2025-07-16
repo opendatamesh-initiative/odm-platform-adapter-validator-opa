@@ -31,7 +31,7 @@ public class EvaluationService {
         validatePolicyRequest(policyEvaluationRequest);
         String path = extractPackagePath(policyEvaluationRequest.getPolicy().getRawContent());
         if (!StringUtils.hasText(path)) {
-            throw new BadRequestException("The policy is missing the package inside is body.");
+            throw new BadRequestException(String.format("The policy [name=%s, id=%s] is missing the package inside is body.", policyEvaluationRequest.getPolicy().getName(),policyEvaluationRequest.getPolicy().getId()));
         }
         String creationPath = path.substring(path.lastIndexOf('/') + 1);
         try {
