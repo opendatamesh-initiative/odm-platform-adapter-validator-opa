@@ -92,7 +92,286 @@ allow := true {
     startswith(input.afterState.dataProductVersion.info.fullyQualifiedName, "urn")
 }
 ```
+## Logging Levels
 
+The OPA Adapter supports **query explanations** through the `explain` parameter provided by Open Policy Agent (OPA).
+
+In this adapter, the value of `explain` is **configured via application configuration** and is **not decided at runtime by the caller**.  
+
+The configured logging level is applied **only during policy validation requests**, when the adapter invokes the OPA Data API to evaluate a policy.
+
+At validation time, the adapter builds the evaluation request using the following structure:
+
+```java
+public class PolicyEvaluationRequestRes {
+    private Long policyEvaluationId;
+    private PolicyResource policy;
+    private JsonNode objectToEvaluate;
+    private Boolean verbose;
+}
+```
+When verbose is true:
+- the adapter includes the explain query parameter in the request to OPA
+- the value of explain is taken from the configured opa.loggingLevel
+- if no logging level is configured, notes is used as a default
+
+### Loggin Level Configuration
+
+The logging (explain) level is configured through the OPA configuration section:
+
+```yaml
+##########################
+# OPA configuration
+##########################
+opa:
+  url:
+    loggingLevel: "notes|debug|full"
+```  
+
+The value of loggingLevel is directly mapped to the OPA explain query parameter used when evaluating policies.
+
+## Logging Levels – Practical Examples
+
+This section shows how different OPA `explain` levels affect the evaluation output using the **same policy and input**.
+
+The examples below are produced by evaluating the following policy, which validates the input structure by ensuring that all fields define a non-empty type.
+The policy fails when at least one field is missing its type and reports each violation accordingly.
+
+```rego
+package dataproduct
+
+import future.keywords.in
+
+default allow := false
+
+missing_field[f.name] {
+    some f in input.fields
+    f.type == ""
+    trace(sprintf("Missing type for field: %v", [f.name]), true)
+}
+
+missing_field[f.name] {
+    some f in input.fields
+    f.type == null
+    trace(sprintf("Missing type for field: %v", [f.name]), true)
+}
+
+allow {
+    count(missing_field) == 0
+}
+```
+
+Input Example
+```json
+{
+  "input": {
+    "fields": [
+      {
+        "name": "age",
+        "type": "int"
+      },
+      {
+        "name": "salary",
+        "type": ""
+      },
+      {
+        "name": "isActive",
+        "type": null
+      }
+    ]
+  }
+}
+```
+
+### Result with **explain=notes**
+
+The notes level returns only messages explicitly emitted by the policy via the trace() built-in.
+```json
+{
+  "policyEvaluationId": 1,
+  "evaluationResult": false,
+  "outputObject": {
+    "decision_id": "4efb727f-1fa9-4da3-a19b-377d5d2216a7",
+    "explanation": [
+            "query:1 Enter data.dataproduct = _",
+            "dataproduct:19 | Enter data.dataproduct.allow",
+            "dataproduct:7  | | Enter data.dataproduct.missing_field",
+            "dataproduct:10 | | | Note \"Missing type for field: salary\"",
+            "dataproduct:13 | | Enter data.dataproduct.missing_field",
+            "dataproduct:16 | | | Note \"Missing type for field: isActive\""
+          ],
+    "result": {
+        "allow": false,
+        "missing_field": [
+            "isActive",
+            "salary"
+            ]
+        }
+    }
+}
+```
+What is happening
+
+- Each failing rule explicitly calls trace()
+- Each trace() generates a Note event
+- explain=notes shows only those Note events
+
+Lines such as:
+```kotlin
+Enter data.dataproduct.allow
+Enter data.dataproduct.missing_field
+```
+
+are structural markers added by OPA to show which rule is being evaluated.
+
+They are minimal compared to debug or full, but help contextualize the Note messages.
+
+#### Result with explain=notes (WITHOUT trace())
+
+If the same policy logic is evaluated without using trace(), the notes logging level has no messages to display.
+
+Example output:
+```json
+{
+  "policyEvaluationId": 1,
+  "evaluationResult": false,
+  "outputObject": {
+    "decision_id": "aae6b691-bafd-4237-951a-f69fad063ad9",
+    "explanation": [
+      ""
+    ],
+    "result": {
+      "allow": false,
+      "missing_field": [
+        "isActive",
+        "salary"
+      ]
+    }
+  }
+}
+```
+This behavior is expected and by design.
+- explain=notes does not automatically describe rule evaluation
+- It only displays messages explicitly emitted via trace()
+- If no trace() calls are executed, OPA has nothing to report
+  
+OPA does **not** invent explanations.
+
+### Result with explain=debug
+
+The debug level provides a developer-oriented explanation, showing how rules and expressions are evaluated, while still including trace() notes.
+```json
+{
+  "policyEvaluationId": 1,
+  "evaluationResult": false,
+  "outputObject": {
+    "decision_id": "a860a547-f3bd-4652-98b5-14fa090df499",
+    "explanation": [
+      "query:1            Enter data.dataproduct = _",
+      "query:1            | Eval data.dataproduct = _",
+      "query:1            | Unify data.dataproduct = _",
+      "query:1            | Unify data.dataproduct.missing_field = _",
+      "query:1            | Index data.dataproduct.allow (matched 1 rule, early exit)",
+      "dataproduct:17     | Enter data.dataproduct.allow",
+      "dataproduct:18     | | Eval __local9__ = data.dataproduct.missing_field",
+      "dataproduct:18     | | Unify __local9__ = data.dataproduct.missing_field",
+      "dataproduct:18     | | Index data.dataproduct.missing_field (matched 2 rules)",
+      "dataproduct:7      | | Enter data.dataproduct.missing_field",
+      "dataproduct:8      | | | Eval f = input.fields[__local0__]",
+      "dataproduct:8      | | | Unify f = input.fields[__local0__]",
+      "dataproduct:8      | | | Unify 0 = __local0__",
+      "dataproduct:8      | | | Unify {\"name\": \"age\", \"type\": \"int\"} = f",
+      "dataproduct:9      | | | Eval f.type = \"\"",
+      "dataproduct:9      | | | Unify f.type = \"\"",
+      "dataproduct:9      | | | Unify \"int\" = \"\"",
+      "dataproduct:9      | | | Fail f.type = \"\"",
+      "dataproduct:8      | | | Redo f = input.fields[__local0__]",
+      "dataproduct:8      | | | Unify 1 = __local0__",
+      "dataproduct:8      | | | Unify {\"name\": \"salary\", \"type\": \"\"} = f",
+      "dataproduct:9      | | | Eval f.type = \"\"",
+      "dataproduct:9      | | | Unify f.type = \"\"",
+      "dataproduct:9      | | | Unify \"\" = \"\"",
+      "dataproduct:7      | | | Eval __local7__ = f.name",
+      "dataproduct:7      | | | Unify __local7__ = f.name",
+      "dataproduct:7      | | | Unify \"salary\" = __local7__",
+      "dataproduct:7      | | | Exit data.dataproduct.missing_field",
+      "dataproduct:7      | | Redo data.dataproduct.missing_field",
+      "dataproduct:7      | | | Redo __local7__ = f.name",
+      "dataproduct:9      | | | Redo f.type = \"\"",
+      "dataproduct:8      | | | Redo f = input.fields[__local0__]",
+      "dataproduct:8      | | | Unify 2 = __local0__",
+      "dataproduct:8      | | | Unify {\"name\": \"isActive\", \"type\": null} = f",
+      "dataproduct:9      | | | Eval f.type = \"\"",
+      "dataproduct:9      | | | Unify f.type = \"\"",
+      "dataproduct:9      | | | Unify null = \"\"",
+      "dataproduct:9      | | | Fail f.type = \"\"",
+      "dataproduct:8      | | | Redo f = input.fields[__local0__]",
+      "dataproduct:12     | | Enter data.dataproduct.missing_field",
+      "dataproduct:13     | | | Eval f = input.fields[__local3__]",
+      "dataproduct:13     | | | Unify f = input.fields[__local3__]",
+      "dataproduct:13     | | | Unify 0 = __local3__",
+      "dataproduct:13     | | | Unify {\"name\": \"age\", \"type\": \"int\"} = f",
+      "dataproduct:14     | | | Eval f.type = null",
+      "dataproduct:14     | | | Unify f.type = null",
+      "dataproduct:14     | | | Unify \"int\" = null",
+      "... many additional trace events ..."
+    ],
+    "result": {
+      "allow": false,
+      "missing_field": [
+        "isActive",
+        "salary"
+      ]
+    }
+  }
+}
+```
+The debug level provides a developer-oriented explanation, showing how rules and expressions are evaluated, while still including trace() notes.
+
+Key characteristics
+
+- Shows rule execution and evaluation flow
+- Includes trace() messages
+- More verbose than notes
+- Intended for policy development and troubleshooting
+
+### Result with explain=full
+
+The full level returns the complete query execution trace, including every evaluation step performed by OPA.
+
+```json
+{
+  "policyEvaluationId": 1,
+  "evaluationResult": false,
+  "outputObject": {
+    "decision_id": "ed45ab4f-7304-4fbd-83da-7bb6486bd3d2",
+    "explanation": [
+      "query:1            Enter data.dataproduct = _",
+      "query:1            | Eval data.dataproduct = _",
+      "query:1            | Index data.dataproduct.allow (matched 1 rule, early exit)",
+      "dataproduct:19     | Enter data.dataproduct.allow",
+      "dataproduct:20     | | Eval __local13__ = data.dataproduct.missing_field",
+      "dataproduct:7      | | | Eval f = input.fields[__local0__]",
+      "dataproduct:9      | | | Eval f.type = \"\"",
+      "dataproduct:9      | | | Fail f.type = \"\"",
+      "dataproduct:10     | | | Eval trace(__local6__, true)",
+      "dataproduct:10     | | | Note \"Missing type for field: salary\"",
+      "... many additional trace events ..."
+    ],
+    "result": {
+      "allow": false,
+      "missing_field": [
+        "isActive",
+        "salary"
+      ]
+    }
+  }
+}
+```
+Key characteristics
+- Includes every Trace Event (Enter, Eval, Fail, Redo, Exit)
+- Shows AST evaluation and variable bindings
+- Extremely verbose
 # Run it
 
 ## Prerequisites
@@ -279,3 +558,33 @@ You can invoke REST endpoints through *OpenAPI UI* available at the following ur
 You can access to OPA Server browsing tho the following page:
 
 * [http://localhost:8181/](http://localhost:8181/)
+
+## Logging Levels – Practical Examples
+
+This section shows how different OPA `explain` levels affect the evaluation output using the **same policy and input**.
+
+The examples below are produced by evaluating the following policy:
+
+```rego
+package dataproduct
+
+import future.keywords.in
+
+default allow := false
+
+missing_field[f.name] {
+    some f in input.fields
+    f.type == ""
+    trace(sprintf("Missing type for field: %v", [f.name]), true)
+}
+
+missing_field[f.name] {
+    some f in input.fields
+    f.type == null
+    trace(sprintf("Missing type for field: %v", [f.name]), true)
+}
+
+allow {
+    count(missing_field) == 0
+}
+```
