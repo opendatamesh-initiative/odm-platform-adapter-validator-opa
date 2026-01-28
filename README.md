@@ -92,15 +92,23 @@ allow := true {
     startswith(input.afterState.dataProductVersion.info.fullyQualifiedName, "urn")
 }
 ```
-## Logging Levels
+## Logging Levels and OPA Explain
+The OPA Adapter supports **policy evaluation explanations** through the `explain` query parameter provided by **Open Policy Agent (OPA)**.
 
-The OPA Adapter supports **query explanations** through the `explain` parameter provided by Open Policy Agent (OPA).
+Explanations are produced by OPA through the **Data API**:
+```url
+POST /v1/data/{package}/{rule}?explain={level}
+```
 
-In this adapter, the value of `explain` is **configured via application configuration** and is **not decided at runtime by the caller**.  
+where the `explain` parameter controls the verbosity of the evaluation trace returned by OPA.
 
-The configured logging level is applied **only during policy validation requests**, when the adapter invokes the OPA Data API to evaluate a policy.
+### How explanation is enabled in the Adapter
 
-At validation time, the adapter builds the evaluation request using the following structure:
+The adapter uses **two distinct parameters**, each with a clear responsibility to enable responsibility:
+
+#### 1. `verbose` flag (runtime, per request)
+
+The `verbose` flag is part of the policy evaluation request:
 
 ```java
 public class PolicyEvaluationRequestRes {
@@ -110,11 +118,22 @@ public class PolicyEvaluationRequestRes {
     private Boolean verbose;
 }
 ```
-When verbose is true:
-- the adapter includes the explain query parameter in the request to OPA
-- the value of explain is taken from the configured opa.loggingLevel
-- if no logging level is configured, notes is used as a default
+When verbose is true the adapter enables explanations by adding the explain parameter to the OPA Data API request.
 
+If verbose is false the adapter does not include the explain parameter in the OPA call
+
+#### 2. OPA logging level (configuration)
+
+When verbose = true, the adapter invokes OPA with a specific explanation level.
+- The explanation level is not decided by the API caller
+- the value of explain is taken from the configured opa.loggingLevel
+- The value is mapped directly to OPA’s explain query parameter
+
+If no logging level is explicitly configured, the adapter defaults to:
+
+```url
+explain=notes
+```
 ### Loggin Level Configuration
 
 The logging (explain) level is configured through the OPA configuration section:
@@ -129,6 +148,12 @@ opa:
 ```  
 
 The value of loggingLevel is directly mapped to the OPA explain query parameter used when evaluating policies.
+
+| Level | Purpose |
+|-------|---------|
+| `notes` | Minimal, shows only messages explicitly emitted by the policy via `trace()` |
+| `debug` | Developer-oriented, shows rule evaluation flow and includes `trace()` notes |
+| `full` | Maximum verbosity, includes every evaluation step (rarely needed) |
 
 ## Logging Levels – Practical Examples
 
@@ -326,52 +351,34 @@ The debug level provides a developer-oriented explanation, showing how rules and
   }
 }
 ```
-The debug level provides a developer-oriented explanation, showing how rules and expressions are evaluated, while still including trace() notes.
 
-Key characteristics
+The `debug` explanation level provides a **developer-oriented view** of how OPA evaluates a policy.
 
-- Shows rule execution and evaluation flow
-- Includes trace() messages
-- More verbose than notes
-- Intended for policy development and troubleshooting
+It includes:
+
+- Rule entry and exit
+- Rule and expression evaluation flow
+- Key unification steps
+- Evaluation failures and retries
+- All messages emitted via the `trace()` built-in
+
+The information returned by `debug` is a **filtered subset of the `full` explanation level**.
+It focuses on the logical execution path that leads to the final decision, while omitting low-level internal engine details such as exhaustive backtracking and intermediate bindings.
 
 ### Result with explain=full
+The `full` explanation level shows **everything OPA does** during policy evaluation.
 
-The full level returns the complete query execution trace, including every evaluation step performed by OPA.
+It includes:
+- Every unification
+- Every comparison
+- Complete backtracking
+- Temporary variable bindings
+- Failed evaluation attempts
 
-```json
-{
-  "policyEvaluationId": 1,
-  "evaluationResult": false,
-  "outputObject": {
-    "decision_id": "ed45ab4f-7304-4fbd-83da-7bb6486bd3d2",
-    "explanation": [
-      "query:1            Enter data.dataproduct = _",
-      "query:1            | Eval data.dataproduct = _",
-      "query:1            | Index data.dataproduct.allow (matched 1 rule, early exit)",
-      "dataproduct:19     | Enter data.dataproduct.allow",
-      "dataproduct:20     | | Eval __local13__ = data.dataproduct.missing_field",
-      "dataproduct:7      | | | Eval f = input.fields[__local0__]",
-      "dataproduct:9      | | | Eval f.type = \"\"",
-      "dataproduct:9      | | | Fail f.type = \"\"",
-      "dataproduct:10     | | | Eval trace(__local6__, true)",
-      "dataproduct:10     | | | Note \"Missing type for field: salary\"",
-      "... many additional trace events ..."
-    ],
-    "result": {
-      "allow": false,
-      "missing_field": [
-        "isActive",
-        "salary"
-      ]
-    }
-  }
-}
-```
-Key characteristics
-- Includes every Trace Event (Enter, Eval, Fail, Redo, Exit)
-- Shows AST evaluation and variable bindings
-- Extremely verbose
+It also includes evaluation paths that **do not lead to any final result**.
+
+This level provides a raw, low-level view of the OPA evaluation engine, with no filtering or simplification.
+
 # Run it
 
 ## Prerequisites
@@ -558,33 +565,3 @@ You can invoke REST endpoints through *OpenAPI UI* available at the following ur
 You can access to OPA Server browsing tho the following page:
 
 * [http://localhost:8181/](http://localhost:8181/)
-
-## Logging Levels – Practical Examples
-
-This section shows how different OPA `explain` levels affect the evaluation output using the **same policy and input**.
-
-The examples below are produced by evaluating the following policy:
-
-```rego
-package dataproduct
-
-import future.keywords.in
-
-default allow := false
-
-missing_field[f.name] {
-    some f in input.fields
-    f.type == ""
-    trace(sprintf("Missing type for field: %v", [f.name]), true)
-}
-
-missing_field[f.name] {
-    some f in input.fields
-    f.type == null
-    trace(sprintf("Missing type for field: %v", [f.name]), true)
-}
-
-allow {
-    count(missing_field) == 0
-}
-```
