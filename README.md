@@ -97,9 +97,9 @@ allow := true {
 }
 ```
 ## How Policy Evaluation Explanation Could be Logged
-Open Policy Agent (OPA) exposes policy evaluation explanations through its Data API, which supports the optional explain query parameter to control the verbosity of the evaluation trace.
+Open Policy Agent (OPA) supports the optional `explain` query parameter to control policy evaluation explanations and the verbosity of the evaluation trace.
 
-The OPA Adapter use this endpoint to evaluate policies with the endpoint:
+The OPA Data API is the following:
 ```url
 POST /v1/data/{package}/{rule}?explain={level}
 ```
@@ -115,7 +115,7 @@ Instead, it controls their usage through two distinct and complementary mechanis
 
 ### How explanation is enabled in the Adapter
 
-The adapter uses **two distinct parameters**, each with a clear responsibility to enable responsibility:
+The adapter uses **two distinct parameters**, each with a clear responsibility to enable explanations:
 
 #### 1. `verbose` flag (runtime, per request)
 
