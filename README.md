@@ -3,6 +3,10 @@
 * [Open Data Mesh Adapter Validator OPA](#open-data-mesh-adapter-validator-opa)
 * [How It Works](#how-it-works)
     * [How the Policy Code Should Be Structured](#how-the-policy-code-should-be-structured)
+    * [How Policy Evaluation Explanation Could be Logged](#how-policy-evaluation-explanation-could-be-logged)
+      * [Verbose Flag](#how-explanation-is-enabled-in-the-adapter)
+      * [Explanation Level (Configuration)](#loggin-level-configuration)
+      * [Practical Examples](#logging-levels--practical-examples)
 * [Run it](#run-it)
     * [Prerequisites](#prerequisites)
         * [Compile dependencies](#compile-dependencies)
@@ -92,15 +96,22 @@ allow := true {
     startswith(input.afterState.dataProductVersion.info.fullyQualifiedName, "urn")
 }
 ```
-## Logging Levels and OPA Explain
-The OPA Adapter supports **policy evaluation explanations** through the `explain` query parameter provided by **Open Policy Agent (OPA)**.
+## How Policy Evaluation Explanation Could be Logged
+Open Policy Agent (OPA) exposes policy evaluation explanations through its Data API, which supports the optional explain query parameter to control the verbosity of the evaluation trace.
 
-Explanations are produced by OPA through the **Data API**:
+The OPA Adapter use this endpoint to evaluate policies with the endpoint:
 ```url
 POST /v1/data/{package}/{rule}?explain={level}
 ```
 
-where the `explain` parameter controls the verbosity of the evaluation trace returned by OPA.
+The explain parameter determines how much detail OPA returns about the policy evaluation process, ranging from minimal trace messages to a complete, low-level execution trace.
+
+The Adapter does not always enable explanations by default.
+Instead, it controls their usage through two distinct and complementary mechanisms:
+
+- a runtime flag that enables or disables explanations for a specific evaluation request
+
+- a configuration-driven logging level that defines the verbosity of the explanation when enabled
 
 ### How explanation is enabled in the Adapter
 
