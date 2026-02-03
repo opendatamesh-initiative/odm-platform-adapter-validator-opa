@@ -104,7 +104,7 @@ The OPA Data API is the following:
 POST /v1/data/{package}/{rule}?explain={level}
 ```
 
-The explain parameter determines how much detail OPA returns about the policy evaluation process, ranging from minimal trace messages to a complete, low-level execution trace.
+This parameter determines how much detail OPA returns about the policy evaluation process, ranging from minimal trace messages to a complete, low-level execution trace.
 
 The Adapter does not always enable explanations by default.
 Instead, it controls their usage through two distinct and complementary mechanisms:
