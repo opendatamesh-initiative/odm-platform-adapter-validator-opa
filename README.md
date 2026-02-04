@@ -129,16 +129,16 @@ public class PolicyEvaluationRequestRes {
     private Boolean verbose;
 }
 ```
-When verbose is true the adapter enables explanations by adding the explain parameter to the OPA Data API request.
+When `verbose` is true the adapter enables explanations by adding the `explain` parameter to the OPA Data API request.
 
-If verbose is false the adapter does not include the explain parameter in the OPA call
+If `verbose` is false the adapter does not include the `explain` parameter in the OPA call
 
 #### 2. OPA logging level (configuration)
 
-When verbose = true, the adapter invokes OPA with a specific explanation level.
+When `verbose=true`, the adapter invokes OPA with a specific explanation level.
 - The explanation level is not decided by the API caller
-- the value of explain is taken from the configured opa.loggingLevel
-- The value is mapped directly to OPA’s explain query parameter
+- the value of `explain` is taken from the configured opa.loggingLevel
+- The value is mapped directly to OPA’s `explain` query parameter
 
 If no logging level is explicitly configured, the adapter defaults to:
 
@@ -147,7 +147,7 @@ explain=notes
 ```
 ### Loggin Level Configuration
 
-The logging (explain) level is configured through the OPA configuration section:
+The logging (`explain`) level is configured through the OPA configuration section:
 
 ```yaml
 ##########################
@@ -158,7 +158,7 @@ opa:
     loggingLevel: "notes|debug|full"
 ```  
 
-The value of loggingLevel is directly mapped to the OPA explain query parameter used when evaluating policies.
+The value of loggingLevel is directly mapped to the OPA `explain` query parameter used when evaluating policies.
 
 | Level | Purpose |
 |-------|---------|
@@ -250,7 +250,7 @@ What is happening
 
 - Each failing rule explicitly calls trace()
 - Each trace() generates a Note event
-- explain=notes shows only those Note events
+- `explain=notes` shows only those Note events
 
 Lines such as:
 ```kotlin
