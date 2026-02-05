@@ -34,8 +34,12 @@ public class OpaClient {
 
     public JsonNode validatePolicy(String path, EvaluationRequestBody document, Boolean verbose) {
         String url = dataUrl + "/" + path;
-        if (verbose != null && Boolean.TRUE.equals(verbose) && loggingLevel != null && !loggingLevel.trim().isEmpty()) {
-            url += "?explain=" + loggingLevel + "&pretty=true";
+        if (Boolean.TRUE.equals(verbose)) {
+            String effectiveLoggingLevel =
+                    (loggingLevel != null && !loggingLevel.trim().isEmpty())
+                            ? loggingLevel
+                            : "notes";
+            url += "?explain=" + effectiveLoggingLevel + "&pretty=true";
         }
         return restTemplate.postForObject(url, document, JsonNode.class);
     }
