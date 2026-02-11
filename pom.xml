@@ -35,7 +35,7 @@ License.
 	<artifactId>odm-platform-adapter-validator-opa</artifactId>
 	<name>OPA Validator</name>
 	<description>Implementation Adapter of Validator for OPA</description>
-	<version>1.0.4</version>
+	<version>1.0.5</version>
 	<url>https://github.com/opendatamesh-initiative/odm-platform-adapter-validator-opa</url>
 	<packaging>pom</packaging>
 
