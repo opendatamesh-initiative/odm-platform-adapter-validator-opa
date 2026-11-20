@@ -448,6 +448,8 @@ java -jar opa-policy-server/target/odm-platform-adapter-validator-opa-1.0.1.jar
 
 ## Run with Docker
 
+The Docker Hub overview of this image is [`DOCKERHUB.md`](DOCKERHUB.md). It is published on every release, so keep it up to date.
+
 *_Dependencies must have been compiled to run this project._
 
 ### Clone repository
